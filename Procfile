@@ -1,1 +1,1 @@
-web: gunicorn in_season.wsgi
+web: gunicorn in_season.in_season.wsgi
