@@ -10934,6 +10934,10 @@ h5,
     color: #000000;
 }
 
+.ftco-navbar-light .navbar-nav>.nav-item:hover>a {
+    color: #82ae46 !important;
+}
+
 @media (max-width: 991.98px) {
     .ftco-navbar-light .navbar-nav>.nav-item.active>a {
         color: #fff;
