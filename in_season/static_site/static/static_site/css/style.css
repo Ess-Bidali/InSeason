@@ -11275,6 +11275,12 @@ h5,
     opacity: .2;
 }
 
+@media (max-width: 800px) {
+    .owl-carousel.home-slider .slider-item .overlay {
+        opacity: .4;
+    }
+}
+
 .owl-carousel.home-slider .slider-item .slider-text {
     height: 400px;
     z-index: 0;
@@ -11603,6 +11609,16 @@ h5,
     font-size: 40px;
     font-weight: 600;
     color: #000000;
+}
+
+.deal-of-the-day {
+    background-image: url(/static/static_site/images/bg_offer.jpg);
+}
+
+@media (max-width: 800px) {
+    .deal-of-the-day {
+        background-image: url(/static/static_site/images/bg_offer_copy.jpg);
+    }
 }
 
 .deal-of-the-day h3 {
