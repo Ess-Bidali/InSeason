@@ -1,5 +1,7 @@
 "# InSeason" 
 
+Live site is on : https://in-season-veges.herokuapp.com/
+
 This is a website built for a food distribution organization.
 
 It will feature:
