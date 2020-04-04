@@ -17,7 +17,7 @@
             <div class="col-md-10 mb-5 text-center">
                 <ul class="product-category">
                     <li><a href="{% url 'static_site:shop' %}" 
-                        class="{% if not filtr %}active{% endif %} categButton">All</a></li>
+                        class="{% if not filtr %}active{% endif %} categButton" id="">All</a></li>
                     {% for category in categ %}
                     <li><a href="{% url 'static_site:shop' category %}s" 
                         class="{% if filtr == category.name %}active{% endif %} categButton" id="{{category}}s">{{category}}s</a></li>
@@ -26,9 +26,9 @@
             </div>
         </div>
         
-            {% block products%}
-            <!------------------- Products display ---------------------->
-            {% endblock%}
+        {% block products%}
+        <!------------------- Products display ---------------------->
+        {% endblock%}
         
     </div>
 </section>

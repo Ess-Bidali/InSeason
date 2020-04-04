@@ -11090,7 +11090,9 @@ h5,
 }
 
 .hero-wrap .slider-text .breadcrumbs span a:hover {
-    color: #82ae46;
+    background-color: #ed9121;
+    padding: 0.5rem;
+    font-size: larger;
 }
 
 .hero-wrap .slider-text .bread {
@@ -11704,6 +11706,16 @@ h5,
 .ftco-product .owl-carousel .owl-stage-outer {
     padding-bottom: 2em;
     position: relative;
+}
+
+@media (max-width: 760px) {
+    #product-row{
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 30px;
+        max-width:90%;
+        height:auto;
+    }
 }
 
 .product {
