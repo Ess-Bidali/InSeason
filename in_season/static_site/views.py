@@ -13,6 +13,7 @@ def index(request):
 
 def shop(request, category=''):
     if request.GET.get('category'):
+        print('processed')
         category = request.GET.get('category')
     if category:
         return redirect('static_site:filter', category=category)
@@ -31,7 +32,7 @@ def shop(request, category=''):
 
 
 def filter_results(request, category):
-    cat = Category.objects.filter(name=category)[0]
+    cat = Category.objects.filter(name=category[:-1])[0]
     products = Product.objects.filter(category=cat)
         
     if request.is_ajax():
