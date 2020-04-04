@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.http import JsonResponse
 from django.core import serializers
+from django.core.paginator import Paginator
 
 # Create your views here.
 def index(request):
@@ -18,6 +19,12 @@ def shop(request, category=''):
     
     categ = Category.objects.all()
     products = Product.objects.all()
+    paginator = Paginator(products, 12)
+    if request.GET.get('page'):
+        page = request.GET.get('page')
+    else:
+        page = 1
+    products = paginator.get_page(page)
     filtr = category
     essentials = {'nbar': 'shop', 'categ': categ, 'products': products, 'filtr':category}
     return render(request, 'static_site/products.html', essentials )
@@ -31,6 +38,12 @@ def filter_results(request, category):
         data = serializers.serialize('json', products)
         return JsonResponse(data, safe=False)
     
+    paginator = Paginator(products, 12)
+    if request.GET.get('page'):
+        page = request.GET.get('page')
+    else:
+        page = 1
+    products = paginator.get_page(page)
     categ = Category.objects.all()
     filtr = category
     essentials = {'nbar': 'shop', 'categ': categ, 'products': products, 'filtr': filtr}
