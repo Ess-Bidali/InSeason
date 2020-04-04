@@ -115,7 +115,7 @@
                     <p>You can call us to make your order or go ahead and make your order online. Our contacts are available 24/7 and are happy to answer all your enquiries, but first, visit our Help section and check out frequently asked questions, for
                         more information.
                     </p>
-                    <a href="#" class="btn btn-primary">Shop now</a></p>
+                    <a href="{% url 'static_site:shop' %}" class="btn btn-primary">Shop now</a></p>
                 </div>
             </div>
         </div>
@@ -128,28 +128,36 @@
             <div class="col-md-12 heading-section text-center ftco-animate">
                 <span class="subheading">Featured Products</span>
                 <h2 class="mb-4">Our Products</h2>
-                <p>Here are some of our top sellers. Check out our online shop for more.</p>
+                <p>Here are some of our top sellers. Check out our <a href="{% url 'static_site:shop' %}">online shop</a> for more.</p>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="row">
+            {% for product in products%}
             <div class="col-md-6 col-lg-3 ftco-animate">
                 <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="{% static 'static_site/images/product-5.jpg' %}" alt="Colorlib Template">
+                    <a href="#" class="img-prod"><img class="img-fluid" src="{{ product.image.url }}"
+                            alt="Colorlib Template">
                         <span class="status">30%</span>
                         <div class="overlay"></div>
                     </a>
                     <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Tomatoes</a></h3>
+                        <h3><a href="#">{{ product }}s</a></h3>
                         <div class="d-flex">
                             <div class="pricing">
-                                <p class="price"><span class="mr-2 price-dc">ksh. 120.00/kg</span><span class="price-sale">ksh. 80.00/kg</span></p>
+                                <p class="price">
+                                {% if product.current_price < product.old_price %}
+                                <span class="mr-2 price-dc">ksh. {{ product.current_price }}</span>
+                                {% endif %}
+                                <span class="price-sale">ksh. {{ product.current_price }}/{{ product.unit }}</span>
+                                </p>
                             </div>
                         </div>
                         <div class="bottom-area d-flex px-3">
                             <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                <a href="#"
+                                    class="add-to-cart d-flex justify-content-center align-items-center text-center">
                                     <span><i class="ion-ios-menu"></i></span>
                                 </a>
                                 <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
@@ -163,94 +171,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="{% static 'static_site/images/product-7.jpg' %}" alt="Colorlib Template">
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Carrots</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price"><span>ksh. 120.00/kg</span></p>
-                            </div>
-                        </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="{% static 'static_site/images/product-1.jpg' %}" alt="Colorlib Template">
-                        <span class="status">30%</span>
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Bell Pepper</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price"><span class="mr-2 price-dc">ksh. 120.00/kg</span><span class="price-sale">ksh. 80.00/kg</span></p>
-                            </div>
-                        </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="{% static 'static_site/images/product-3.jpg' %}" alt="Colorlib Template">
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Green Beans</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price"><span>ksh. 120.00</span></p>
-                            </div>
-                        </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>

@@ -6,6 +6,7 @@
  */
 
 :root {
+    --highlighted: #82ae46;
     --blue: #007bff;
     --indigo: #6610f2;
     --purple: #6f42c1;
@@ -11088,6 +11089,10 @@ h5,
     color: #fff;
 }
 
+.hero-wrap .slider-text .breadcrumbs span a:hover {
+    color: #82ae46;
+}
+
 .hero-wrap .slider-text .bread {
     font-weight: 800;
     color: #fff;
@@ -12503,6 +12508,10 @@ textarea.form-control {
     color: #000000;
 }
 
+.ftco-footer .ftco-footer-widget ul li a:hover {
+    color: #82ae46 !important;
+}
+
 .ftco-footer .ftco-footer-widget .btn-primary {
     border: 2px solid #fff !important;
 }
@@ -12539,7 +12548,7 @@ textarea.form-control {
 }
 
 .ftco-footer-social li a:hover {
-    color: #000000;
+    color: #82ae46 !important;
 }
 
 #map {
@@ -13240,6 +13249,7 @@ textarea.form-control {
 }
 
 .block-27 ul li.active a,
+.block-27 ul li a:hover,
 .block-27 ul li.active span {
     background: #82ae46;
     color: #fff;
