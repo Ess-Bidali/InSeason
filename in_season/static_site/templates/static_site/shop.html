@@ -16,9 +16,9 @@
         <div class="row justify-content-center">
             <div class="col-md-10 mb-5 text-center">
                 <ul class="product-category">
-                    <li><a href="{% url 'static_site:shop' %}" class="{% if filtr == '' %}active{% endif %}">All</a></li>
+                    <li><a href="{% url 'static_site:shop' %}" class="categButton {% if not filtr %}active{% endif %}">All</a></li>
                     {% for category in categ %}
-                    <li><a href="{% url 'static_site:shop' category %}" class="categButton {% if filtr == category %}active{% endif %}" id="{{category}}">{{category}}s</a></li>
+                    <li><a href="{% url 'static_site:shop' category %}" class="categButton {% if filtr == category.name %}active{% endif %}" id="{{category}}">{{category}}s</a></li>
                     {% endfor %}
                 </ul>
             </div>

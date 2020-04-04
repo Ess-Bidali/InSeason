@@ -12,7 +12,7 @@ def index(request):
 
 def shop(request, category=''):
     if request.GET.get('category'):
-        return redirect('static_site:filter', category=request.GET.get('category'))
+        category = request.GET.get('category')
     if category:
         return redirect('static_site:filter', category=category)
     
