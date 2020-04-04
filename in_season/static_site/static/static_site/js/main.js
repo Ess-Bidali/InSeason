@@ -260,57 +260,61 @@ AOS.init({
     };
     OnePageNav();
 
-    // $('.categButton').click(function () {
-    //     $.ajax({
-    //         type: 'GET',
-    //         data: { category: this.id },
-    //         success: function (data) {
-    //             data = JSON.parse(data);
-    //             $('#product-row').empty();
-    //             console.log(data);
-    //             let txt = ""
-    //             data.forEach(product => {
-    //                 txt += `                    
-    //                 <div class="col-md-6 col-lg-3">
-    //                     <div class="product">
-    //                     <a href="#" class="img-prod"><img class="img-fluid" src="${product["fields"]["image"]}" alt="${product["fields"]["name"]} image">
-    //                         <span class="status">30%</span>
-    //                         <div class="overlay"></div>
-    //                     </a>
-    //                         <div class="text py-3 pb-4 px-3 text-center">
-    //                             <h3><a href="#">${product["fields"]["name"]}s</a></h3>
-    //                             <div class="d-flex">
-    //                                 <div class="pricing">
-    //                                     <p class="price">
-    //                                         <span class="mr-2 price-dc">ksh. ${product["fields"]['old_price']}</span>
-    //                                         <span class="price-sale">ksh. ${product["fields"]['current_price']}/${product["fields"]['unit']}</span>
-    //                                     </p>
-    //                                 </div>
-    //                             </div>
-    //                             <div class="bottom-area d-flex px-3">
-    //                                 <div class="m-auto d-flex">
-    //                                     <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-    //                                         <span><i class="ion-ios-menu"></i></span>
-    //                                     </a>
-    //                                     <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-    //                                         <span><i class="ion-ios-cart"></i></span>
-    //                                     </a>
-    //                                     <a href="#" class="heart d-flex justify-content-center align-items-center ">
-    //                                         <span><i class="ion-ios-heart"></i></span>
-    //                                     </a>
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 </div>                    
-    //                 `
-    //             });
-    //             $('#product-row').prepend(`
-    //                 ${txt}
-    //             `);                
-    //         }
-    //     });
-    // });
+    $('.categButton').click(function () {
+        $('.categButton.active').removeClass("active");
+        console.log(this);  
+        $(this).addClass("active") 
+        // $.ajax({
+        //     type: 'GET',
+        //     data: { category: this.id },
+        //     success: function (data) {
+        //         data = JSON.parse(data);
+        //         $('#product-row').empty();
+        //         console.log(data);
+        //         let txt = ""
+        //         data.forEach(product => {
+        //             txt += `                    
+        //             <div class="col-md-6 col-lg-3">
+        //                 <div class="product">
+        //                 <a href="#" class="img-prod"><img class="img-fluid" src="${product["fields"]["image"]}" alt="${product["fields"]["name"]} image">
+        //                     <span class="status">30%</span>
+        //                     <div class="overlay"></div>
+        //                 </a>
+        //                     <div class="text py-3 pb-4 px-3 text-center">
+        //                         <h3><a href="#">${product["fields"]["name"]}s</a></h3>
+        //                         <div class="d-flex">
+        //                             <div class="pricing">
+        //                                 <p class="price">
+        //                                     <span class="mr-2 price-dc">ksh. ${product["fields"]['old_price']}</span>
+        //                                     <span class="price-sale">ksh. ${product["fields"]['current_price']}/${product["fields"]['unit']}</span>
+        //                                 </p>
+        //                             </div>
+        //                         </div>
+        //                         <div class="bottom-area d-flex px-3">
+        //                             <div class="m-auto d-flex">
+        //                                 <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+        //                                     <span><i class="ion-ios-menu"></i></span>
+        //                                 </a>
+        //                                 <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+        //                                     <span><i class="ion-ios-cart"></i></span>
+        //                                 </a>
+        //                                 <a href="#" class="heart d-flex justify-content-center align-items-center ">
+        //                                     <span><i class="ion-ios-heart"></i></span>
+        //                                 </a>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             </div>                    
+        //             `
+        //         });
+        //         $('#product-row').prepend(`
+        //             ${txt}
+        //         `);
+        //         console.log(this);                
+        //     }
+        // });
+    });
 
     // magnific popup
     $('.image-popup').magnificPopup({

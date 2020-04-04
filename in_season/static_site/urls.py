@@ -9,7 +9,7 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('shop/', views.shop, name='shop'),
     path('shop/<str:category>', views.shop, name='shop'),
-    path('shop/<str:category>/', views.filter_results, name='filter'),
+    path('single/', views.single, name='single_product'),
 ]
 
 if settings.DEBUG:
