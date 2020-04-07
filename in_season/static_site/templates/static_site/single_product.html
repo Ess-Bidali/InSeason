@@ -4,8 +4,8 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
             <div class="col-md-9 ftco-animate text-center">
-                <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'static_site:home' %}">Home</a></span> <span class="mr-2"><a
-                            href="{% url 'static_site:shop' %}">Shop</a></span></p>
+                <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'static_site:home' %}">Home</a></span> <span
+                        class="mr-2"><a href="{% url 'static_site:shop' %}">Shop</a></span></p>
                 <h1 class="mb-0 bread">Single Product</h1>
             </div>
         </div>
@@ -16,12 +16,12 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6 mb-5 ftco-animate">
-                <a href="{{ product.image.url }}" class="image-popup"><img src="{{ product.image.url }}" class="img-fluid"
-                        alt="{{product}} image"></a>
+                <a href="{{ product.image.url }}" class="image-popup"><img src="{{ product.image.url }}"
+                        class="img-fluid" alt="{{product}} image"></a>
             </div>
             <div class="col-lg-6 product-details pl-md-5 ftco-animate">
                 <h3>{{product}}s</h3>
-                
+
                 <div class="rating d-flex" id="star-rating">
                     <p class="text-left mr-4">
                         Rate us!
@@ -39,7 +39,7 @@
                         <a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
                     </p>
                 </div>
-                
+
                 <p class="price"><span>Ksh. {{product.current_price}} / {{product.unit}}</span></p>
                 <div class="row mt-4">
                     <!----------------------- Size  -------------------------------->
@@ -55,6 +55,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="w-100"></div>
                     <!--------------------- Quantity  ------------------------------->
                     <div class="input-group col-md-6 d-flex mb-3">
@@ -63,13 +64,17 @@
                                 <i class="ion-ios-remove"></i>
                             </button>
                         </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" data-max="100">
+                        <input type="text" id="quantity" name="quantity" class="form-control input-number quantity-input" value="1"
+                            data-max="100" data-each="{{product.current_price}}">
                         <span class="input-group-btn ml-2 quantity-control" data-type="plus">
                             <button type="button" class="quantity-right-plus btn">
                                 <i class="ion-ios-add"></i>
                             </button>
                         </span>
                     </div>
+                    <input class="form-control col-md-4 d-flex mb-3" type="text" placeholder="Ksh. 0.00" readonly
+                        id="total-cost">
+
                     <div class="w-100"></div>
                     <div class="col-md-12">
                         <p style="color: #000;">600 {{product.unit}} available</p>
@@ -93,7 +98,7 @@
     </div>
     <div class="container">
         <!--------------------------------- Products display --------------------------------------->
-        
+
         {% include "./products.html" with products=related %}
 
         <!--------------------------------- End of products display -------------------------------->
