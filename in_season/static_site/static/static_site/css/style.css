@@ -11709,7 +11709,7 @@ h5,
 }
 
 @media (max-width: 760px) {
-    #product-row{
+    .product-row{
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 30px;

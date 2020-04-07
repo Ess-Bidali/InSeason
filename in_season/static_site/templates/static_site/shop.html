@@ -19,17 +19,44 @@
                     <li><a href="{% url 'static_site:shop' %}" 
                         class="{% if not filtr %}active{% endif %} categButton" id="">All</a></li>
                     {% for category in categ %}
-                    <li><a href="{% url 'static_site:shop' category %}s" 
+                    <li><a href="{% url 'static_site:shop' category|lower %}s" 
                         class="{% if filtr == category.name %}active{% endif %} categButton" id="{{category}}s">{{category}}s</a></li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
         
-        {% block products%}
-        <!------------------- Products display ---------------------->
-        {% endblock%}
-        
+        <!--------------------------------- Products display --------------------------------------->
+
+        {% include "./products.html" with products=products %}
+
+        <!-------------------------------- End of products display --------------------------------->
+
+        <!-------------------------------- Products Pagination -------------------------------------->
+        <div class="row mt-5">
+            <div class="col text-center">
+                <div class="block-27">
+                    <ul>
+                        <li><a href="?page=1" title="First page">&lt;&lt;</a></li>
+                        {% if products.has_previous %}
+                            <li><a href="?page={{products.previous_page_number}}" title="Previous page">&lt;</a></li>
+                        {% endif %}
+                        {% for num in products.paginator.page_range %}
+                            {% if num == products.number %}
+                                <li class="active"><span>{{num}}</span></li>
+                            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                                <li><a href="?page={{num}}">{{num}}</a></li> 
+                            {% endif %}
+                        {% endfor %}
+                        {% if products.has_next %}
+                            <li><a href="?page={{products.next_page_number}}" title="Next page">&gt;</a></li>
+                        {% endif %}
+                        <li><a href="?page={{products.paginator.num_pages}}" title="Last page">&gt;&gt;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-------------------------------- End of products pagination --------------------------------->
     </div>
 </section>
 

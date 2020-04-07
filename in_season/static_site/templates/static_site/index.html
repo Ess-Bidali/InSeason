@@ -109,10 +109,15 @@
                     </div>
                 </div>
                 <div class="pb-md-5">
-                    <p>Your business is your livelihood. Which is why we, at <em><b>In Season</b></em>, have dedicated our business to providing you with quality, affordable product that will keep your customers happy. We specialize in delivering these products
-                        right to your stall/duka or place of business, thus saving you the time, cost and hustle of going to the market yourself.
+                    <p>Your business is your livelihood. Which is why we, at <em><b>In Season</b></em>, have dedicated
+                        our business to providing you with quality, affordable product that will keep your customers
+                        happy. We specialize in delivering these products
+                        right to your stall/duka or place of business, thus saving you the time, cost and hustle of
+                        going to the market yourself.
                     </p>
-                    <p>You can call us to make your order or go ahead and make your order online. Our contacts are available 24/7 and are happy to answer all your enquiries, but first, visit our Help section and check out frequently asked questions, for
+                    <p>You can call us to make your order or go ahead and make your order online. Our contacts are
+                        available 24/7 and are happy to answer all your enquiries, but first, visit our Help section and
+                        check out frequently asked questions, for
                         more information.
                     </p>
                     <a href="{% url 'static_site:shop' %}" class="btn btn-primary">Shop now</a></p>
@@ -128,50 +133,16 @@
             <div class="col-md-12 heading-section text-center ftco-animate">
                 <span class="subheading">Featured Products</span>
                 <h2 class="mb-4">Our Products</h2>
-                <p>Here are some of our top sellers. Check out our <a href="{% url 'static_site:shop' %}">online shop</a> for more.</p>
+                <p>Here are some of our top sellers. Check out our <a href="{% url 'static_site:shop' %}">online
+                        shop</a> for more.</p>
             </div>
         </div>
     </div>
     <div class="container">
-        <div class="row">
-            {% for product in products%}
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="{{ product.image.url }}"
-                            alt="Colorlib Template">
-                        <span class="status">30%</span>
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">{{ product }}s</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price">
-                                {% if product.current_price < product.old_price %}
-                                <span class="mr-2 price-dc">ksh. {{ product.current_price }}</span>
-                                {% endif %}
-                                <span class="price-sale">ksh. {{ product.current_price }}/{{ product.unit }}</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#"
-                                    class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+        <div class="row product-row">
+
+            {% include "./products.html" with products=products %}
+
         </div>
     </div>
 </section>
@@ -182,7 +153,8 @@
             <div class="col-md-6 heading-section ftco-animate  ftco-animate">
                 <span class="subheading">Best Price For You</span>
                 <h2 class="mb-4">Deal of the day</h2>
-                <p>Order your avocados today. Different sized, both ripe and unripe available at a discounted price today.
+                <p>Order your avocados today. Different sized, both ripe and unripe available at a discounted price
+                    today.
                 </p>
                 <h3><a href="#">Avocado</a></h3>
                 <span class="price">ksh. 20 <a href="#">now ksh. 17 only</a> per piece</span>
@@ -210,13 +182,15 @@
                 <div class="carousel-testimony owl-carousel">
                     <div class="item">
                         <div class="testimony-wrap p-4 pb-5">
-                            <div class="user-img mb-5" style="background-image: url(/static/static_site/images/person_1.jpg)">
+                            <div class="user-img mb-5"
+                                style="background-image: url(/static/static_site/images/person_1.jpg)">
                                 <span class="quote d-flex align-items-center justify-content-center">
                                     <i class="icon-quote-left"></i>
                                 </span>
                             </div>
                             <div class="text text-center">
-                                <p class="mb-5 pl-4 line">They have the best product and always deliver on time. I couldn't be happier.</p>
+                                <p class="mb-5 pl-4 line">They have the best product and always deliver on time. I
+                                    couldn't be happier.</p>
                                 <p class="name">Brian Maingi</p>
                                 <span class="position">Kaloleni</span>
                             </div>
@@ -224,13 +198,15 @@
                     </div>
                     <div class="item">
                         <div class="testimony-wrap p-4 pb-5">
-                            <div class="user-img mb-5" style="background-image: url(/static/static_site/images/person_4.jpg)">
+                            <div class="user-img mb-5"
+                                style="background-image: url(/static/static_site/images/person_4.jpg)">
                                 <span class="quote d-flex align-items-center justify-content-center">
                                     <i class="icon-quote-left"></i>
                                 </span>
                             </div>
                             <div class="text text-center">
-                                <p class="mb-5 pl-4 line">I have worked with them for a while now. I can't wait till they start supplying all of my products.</p>
+                                <p class="mb-5 pl-4 line">I have worked with them for a while now. I can't wait till
+                                    they start supplying all of my products.</p>
                                 <p class="name">Mama Achieng'</p>
                                 <span class="position">Donholm</span>
                             </div>
@@ -238,7 +214,8 @@
                     </div>
                     <div class="item">
                         <div class="testimony-wrap p-4 pb-5">
-                            <div class="user-img mb-5" style="background-image: url(/static/static_site/images/person_2.jpg)">
+                            <div class="user-img mb-5"
+                                style="background-image: url(/static/static_site/images/person_2.jpg)">
                                 <span class="quote d-flex align-items-center justify-content-center">
                                     <i class="icon-quote-left"></i>
                                 </span>

@@ -1,6 +1,6 @@
-{% extends './shop.html' %}{% load static %}
-{% block products %}
-<div class="row" id="product-row"> 
+{% load static %}
+
+<div class="row product-row" id="product-row"> 
     {% for product in products %}
     <div class="col-md-6 col-lg-3 ftco-animate">
         <div class="product">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="bottom-area d-flex px-3">
                     <div class="m-auto d-flex">
-                        <a href="{% url 'static_site:single_product' %}" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                        <a href="{% url 'static_site:single_product' product|lower %}" class="add-to-cart d-flex justify-content-center align-items-center text-center">
                             <span><i class="ion-ios-menu"></i></span>
                         </a>
                         <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
@@ -38,28 +38,3 @@
     </div>
     {% endfor %}
 </div>
-<!------------------------------ Pagination ------------------------------------------->
-<div class="row mt-5">
-    <div class="col text-center">
-        <div class="block-27">
-            <ul>
-                <li><a href="?page=1" title="First page">&lt;&lt;</a></li>
-                {% if products.has_previous %}
-                    <li><a href="?page={{products.previous_page_number}}" title="Previous page">&lt;</a></li>
-                {% endif %}
-                {% for num in products.paginator.page_range %}
-                    {% if num == products.number %}
-                        <li class="active"><span>{{num}}</span></li>
-                    {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
-                        <li><a href="?page={{num}}">{{num}}</a></li> 
-                    {% endif %}
-                {% endfor %}
-                {% if products.has_next %}
-                    <li><a href="?page={{products.next_page_number}}" title="Next page">&gt;</a></li>
-                {% endif %}
-                <li><a href="?page={{products.paginator.num_pages}}" title="Last page">&gt;&gt;</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-{% endblock %}

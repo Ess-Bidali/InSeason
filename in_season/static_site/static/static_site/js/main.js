@@ -110,6 +110,7 @@ AOS.init({
     };
     carousel();
 
+    //reveal navbar dropdown menu on hover/click
     $('nav .dropdown').hover(function () {
         var $this = $(this);
         // 	 timer;
@@ -128,11 +129,6 @@ AOS.init({
         $this.find('.dropdown-menu').removeClass('show');
         // }, 100);
     });
-
-
-    // $('#dropdown04').on('show.bs.dropdown', function() {
-    //     console.log('show');
-    // });
 
     // scroll
     var scrollWindow = function () {
@@ -235,7 +231,6 @@ AOS.init({
     };
     contentWayPoint();
 
-
     // navigation
     var OnePageNav = function () {
         $(".smoothscroll[href^='#'], #ftco-nav ul li a[href^='#']").on('click', function (e) {
@@ -337,6 +332,7 @@ AOS.init({
         }
     });
 
+
     $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
         disableOn: 700,
         type: 'iframe',
@@ -346,7 +342,6 @@ AOS.init({
 
         fixedContentPos: false
     });
-
 
 
     var goHere = function () {
@@ -397,6 +392,17 @@ AOS.init({
 
     setInterval(function () { makeTimer(); }, 1000);
 
+    $('.quantity-control').click(function(){
+        var operation = $(this).attr("data-type");
+        var text = $('#quantity');
+        var quantityValue = parseInt(text.val());
+        if (operation == 'plus' && quantityValue < text.attr("data-max")){
+            text.val(quantityValue + 1);
+        }
+        else if(operation == 'minus' && quantityValue > 1){
+            text.val(quantityValue - 1);
+        }
+    });
 
 
 })(jQuery);

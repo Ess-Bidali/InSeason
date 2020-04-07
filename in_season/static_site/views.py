@@ -15,7 +15,7 @@ def shop(request, category=''):
     category = request.GET.get('category') if request.GET.get('category') else category
     #if category is provided, perform filter, else grab all products
     if category:
-        cat = Category.objects.filter(name=category[:-1])[0]
+        cat = Category.objects.filter(name__iexact=category[:-1])[0]
         products = Product.objects.filter(category=cat)
         #if request is ajax, return filtered products as a json object
         if request.is_ajax(): return filter_results(products)            
@@ -26,7 +26,7 @@ def shop(request, category=''):
     products = paginate(request, products)
     filtr = category[:-1]
     essentials = {'nbar': 'shop', 'categ': categ, 'products': products, 'filtr':filtr}
-    return render(request, 'static_site/products.html', essentials )
+    return render(request, 'static_site/shop.html', essentials )
 
 
 def filter_results(products):
@@ -40,6 +40,14 @@ def paginate(request, products):
     page = request.GET.get('page') if request.GET.get('page') else 1
     return paginator.get_page(page)
 
-def single(request):
-    essentials = {'nbar': 'single'}
+def single(request, product_name):
+    product = Product.objects.get(name__iexact=product_name).id if product_name else Product.objects.all()[0].id
+    product = Product.objects.get(id=product)
+    related_products = Product.objects.filter(category=product.category).exclude(id=product.id)
+    essentials = {'nbar': 'single', 'product': product, 'related': related_products}
     return render(request, 'static_site/single_product.html', essentials)
+
+def basket(request):
+    products = Product.objects.all()[:4]
+    essentials = {'nbar': 'cart', 'products': products}
+    return render(request, 'static_site/my_basket.html', essentials)
