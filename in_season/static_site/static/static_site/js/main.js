@@ -110,6 +110,7 @@ AOS.init({
     };
     carousel();
 
+    //reveal navbar dropdown menu on hover/click
     $('nav .dropdown').hover(function () {
         var $this = $(this);
         // 	 timer;
@@ -128,11 +129,6 @@ AOS.init({
         $this.find('.dropdown-menu').removeClass('show');
         // }, 100);
     });
-
-
-    // $('#dropdown04').on('show.bs.dropdown', function() {
-    //     console.log('show');
-    // });
 
     // scroll
     var scrollWindow = function () {
@@ -235,7 +231,6 @@ AOS.init({
     };
     contentWayPoint();
 
-
     // navigation
     var OnePageNav = function () {
         $(".smoothscroll[href^='#'], #ftco-nav ul li a[href^='#']").on('click', function (e) {
@@ -337,6 +332,7 @@ AOS.init({
         }
     });
 
+
     $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
         disableOn: 700,
         type: 'iframe',
@@ -346,7 +342,6 @@ AOS.init({
 
         fixedContentPos: false
     });
-
 
 
     var goHere = function () {
@@ -397,6 +392,53 @@ AOS.init({
 
     setInterval(function () { makeTimer(); }, 1000);
 
+    //Single product page
+    //display total cost of product order based on quantity and unit price
+    let changeTotal = function(){
+        let text = $('#quantity');
+        let costOfEach = parseInt(text.attr("data-each"));
+        let totalCost = costOfEach * parseInt(text.val())
+        $('#total-cost').val("Ksh. " + totalCost.toFixed(2));
+    }
+    
+    $('.quantity-control').click(function(){
+        let operation = $(this).attr("data-type");
+        let text = $('#quantity');
+        let displayedValue = parseInt(text.val());
+        let maximumValue = parseInt(text.attr("data-max"));
+        //perform operation on displayed value
+        if (operation == 'plus' && displayedValue < maximumValue){
+            text.val(displayedValue + 1);
+        }else if(operation == 'minus' && displayedValue > 1){
+            text.val(displayedValue - 1);
+        }
+        //change total amount after operation is done
+        changeTotal();
+    });
 
 
+    // Also change total amount when user types value
+    $('.quantity-input').on("change", function(){
+        //First check if input is valid i.e 1 >= x <= max value
+        if ($(this).val() < 1){
+            $(this).val(1);
+        }
+        else if ($(this).val() > parseInt($(this).attr("data-max"))){
+            $(this).val($(this).attr("data-max"));
+        }
+        changeTotal();
+    });
+
+    //Shopping basket page
+    //get total of each
+    let setBasketTotals = function(product){
+        let quantity = parseInt($('#' + product + '-quant').val());
+        let price = parseInt($('#' + product + '-price').text());
+        let totalAmount = (quantity * price).toFixed(2);
+        $('#' + product + '-total').text(totalAmount);
+    };
+
+    // $.each($('#Onion'), setBasketTotals());
+    
+    
 })(jQuery);
