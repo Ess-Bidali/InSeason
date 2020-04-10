@@ -79,7 +79,7 @@
                         <li class="nav-item {% if nbar == 'home' %}active{% endif %}"><a
                                 href="{% url 'static_site:home'%}" class="nav-link">Home</a></li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle {% if nbar == 'shop' or nbar == 'product' or nbar == 'cart' or nbar == 'checkout' %}active{% endif %}"
+                            <a class="nav-link dropdown-toggle {% if nbar == 'shop' or nbar == 'product' or nbar == 'basket' or nbar == 'checkout' %}active{% endif %}"
                                 id="dropdown04" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">Shop</a>
                             <div class="dropdown-menu" aria-labelledby="dropdown04">
@@ -96,7 +96,7 @@
                         <li class="nav-item {% if nbar == 'contact' %}active{% endif %}"><a href="#"
                                 class="nav-link">Contact</a></li>
                         <li class="nav-item cta cta-colored"><a href="#" class="nav-link"><span
-                                    class="icon-shopping_cart"></span>[0]</a></li>
+                                    class="icon-shopping_cart"></span>[{{capacity}}]</a></li>
 
                     </ul>
                 </div>

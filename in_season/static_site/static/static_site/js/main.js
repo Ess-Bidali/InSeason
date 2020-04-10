@@ -418,7 +418,7 @@ AOS.init({
 
 
     // Also change total amount when user types value
-    $('.quantity-input').on("change", function(){
+    $('.quantity-input').on("input", function(){
         //First check if input is valid i.e 1 >= x <= max value
         if ($(this).val() < 1){
             $(this).val(1);
@@ -428,17 +428,6 @@ AOS.init({
         }
         changeTotal();
     });
-
-    //Shopping basket page
-    //get total of each
-    let setBasketTotals = function(product){
-        let quantity = parseInt($('#' + product + '-quant').val());
-        let price = parseInt($('#' + product + '-price').text());
-        let totalAmount = (quantity * price).toFixed(2);
-        $('#' + product + '-total').text(totalAmount);
-    };
-
-    // $.each($('#Onion'), setBasketTotals());
     
     
 })(jQuery);

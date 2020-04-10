@@ -20,7 +20,7 @@
                         class="{% if not filtr %}active{% endif %} categButton" id="">All</a></li>
                     {% for category in categ %}
                     <li><a href="{% url 'static_site:shop' category|lower %}s" 
-                        class="{% if filtr == category.name %}active{% endif %} categButton" id="{{category}}s">{{category}}s</a></li>
+                        class="{% if filtr == category.name|lower %}active{% endif %} categButton" id="{{category}}s">{{category}}s</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -28,7 +28,7 @@
         
         <!--------------------------------- Products display --------------------------------------->
 
-        {% include "./products.html" with products=products %}
+        {% include "./products.html" %}
 
         <!-------------------------------- End of products display --------------------------------->
 

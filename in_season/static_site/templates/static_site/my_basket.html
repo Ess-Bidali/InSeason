@@ -1,12 +1,12 @@
-{% extends './base.html'%} {% block content%} {% load static %}
+{% extends './base.html'%} {% block content%} {% load static %}{% load mathfilters %}
 
 <div class="hero-wrap hero-bread" style="background-image: url('/static/static_site/images/bg_3a.jpg');">
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
             <div class="col-md-9 ftco-animate text-center">
-                <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'static_site:home' %}">Home</a></span> <span class="mr-2"><a
-                    href="{% url 'static_site:shop' %}">Shop</a></span></p>
-                <h1 class="mb-0 bread">My Basket</h1>
+                <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'static_site:home' %}">Home</a></span> <span
+                        class="mr-2"><a href="{% url 'static_site:shop' %}">Shop</a></span></p>
+                <h1 class="mb-0 bread">My Shopping Basket</h1>
             </div>
         </div>
     </div>
@@ -22,17 +22,27 @@
                             <tr class="text-center">
                                 <th>&nbsp;</th>
                                 <th>&nbsp;</th>
-                                <th>Product name</th>
-                                <th>Unit</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
+                                <th>Product name/Total</th>
+                                <th>Total(Ksh.)</th>
+                                <th>Unit Price(Ksh.)</th>
+
                             </tr>
                         </thead>
                         <tbody id="basket-products">
-                            {% for product in products %}
+                            {% for product, values in products.items %}
+                            {% for key,amount in values.items %}
                             <tr class="text-center" id="{{product}}">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+                                <td class="product-remove">
+                                    <a href="#" class="dropdown-toggle" id="edit-or-delete" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <span class="ion-ios-menu"></span>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="edit-or-delete">
+                                        <a class="dropdown-item" href="{% url 'static_site:basket2' product_name=product.name|lower key=key act='edit'%}">Edit order</a>
+                                        <a class="dropdown-item" href="{% url 'static_site:basket' product|lower key %}">Remove from
+                                            basket</a>
+                                    </div>
+                                </td>
 
                                 <td class="image-prod">
                                     <div class="img" style="background-image:url({{product.image.url}});"></div>
@@ -40,85 +50,39 @@
 
                                 <td class="product-name">
                                     <h3>{{product}}s</h3>
-                                    <p>Details</p>
+                                    <p>{{key}} ({{amount}}{{product.unit}})</p>
                                 </td>
 
-                                <td class="price">Ksh.</td>
+                                <td class="total" id="{{product}}-total">{{ product.current_price|mul:amount}}</td>
 
                                 <td class="price" id="{{product}}-price">{{product.current_price}}</td>
-
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" id="{{product}}-quant" name="quantity" class="form-control input-number quantity-input" value="1"
-                                        data-max="100" data-each="{{product.current_price}}">
-                                    </div>
-                                </td>
-
-                                <td class="total" id="{{product}}-total"></td>
                             </tr><!-- END TR-->
+                            {% endfor %}
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <div class="row justify-content-end">
-            <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
-                <div class="cart-total mb-3">
-                    <h3>Coupon Code</h3>
-                    <p>Enter your coupon code if you have one</p>
-                    <form action="#" class="info">
-                        <div class="form-group">
-                            <label for="">Coupon code</label>
-                            <input type="text" class="form-control text-left px-3" placeholder="">
-                        </div>
-                    </form>
-                </div>
-                <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Apply Coupon</a></p>
-            </div>
-            <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
-                <div class="cart-total mb-3">
-                    <h3>Estimate shipping and tax</h3>
-                    <p>Enter your destination to get a shipping estimate</p>
-                    <form action="#" class="info">
-                        <div class="form-group">
-                            <label for="">Country</label>
-                            <input type="text" class="form-control text-left px-3" placeholder="">
-                        </div>
-                        <div class="form-group">
-                            <label for="country">State/Province</label>
-                            <input type="text" class="form-control text-left px-3" placeholder="">
-                        </div>
-                        <div class="form-group">
-                            <label for="country">Zip/Postal Code</label>
-                            <input type="text" class="form-control text-left px-3" placeholder="">
-                        </div>
-                    </form>
-                </div>
-                <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Estimate</a></p>
-            </div>
-            <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+        <div class="row">
+            <div class="col-lg-5 mt-5 cart-wrap ftco-animate">
                 <div class="cart-total mb-3">
                     <h3>Cart Totals</h3>
                     <p class="d-flex">
                         <span>Subtotal</span>
-                        <span>$20.60</span>
+                        <span>Ksh. 20.60</span>
                     </p>
                     <p class="d-flex">
-                        <span>Delivery</span>
-                        <span>$0.00</span>
-                    </p>
-                    <p class="d-flex">
-                        <span>Discount</span>
-                        <span>$3.00</span>
+                        <span>Deal of the day discount</span>
+                        <span>Ksh. 3.00</span>
                     </p>
                     <hr>
                     <p class="d-flex total-price">
                         <span>Total</span>
-                        <span>$17.60</span>
+                        <span>Ksh. 17.60</span>
                     </p>
                 </div>
-                <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+                <p><a href="" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
             </div>
         </div>
     </div>

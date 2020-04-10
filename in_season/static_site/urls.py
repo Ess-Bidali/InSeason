@@ -10,7 +10,10 @@ urlpatterns = [
     path('shop/', views.shop, name='shop'),
     path('shop/<str:category>', views.shop, name='shop'),
     path('shop/product/<str:product_name>', views.single, name='single_product'),
+    path('shop/product/<str:product_name>/<str:key>', views.single, name='single_product_edit'),
     path('shop/basket/', views.basket, name='basket'),
+    path('shop/basket/<str:product_name>/<str:key>', views.basket, name='basket'),
+    path('shop/basket/<str:product_name>/<str:key>/<str:act>', views.edit_product, name='basket2'),
 ]
 
 if settings.DEBUG:
