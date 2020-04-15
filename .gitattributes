@@ -1,4 +1,3 @@
 *.css linguist-vendored
 *.scss linguist-vendored
-in_season/static_site/static/static_site/css/style.css linguist-vendored=false
 *.html linguist-detectable=false
