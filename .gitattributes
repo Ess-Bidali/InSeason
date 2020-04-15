@@ -1,4 +1,4 @@
-*.css linguist-vendored
+*.css linguist-detectable=false
 *.scss linguist-vendored
-D:\Programming\inSeason\in_season\static_site\static\static_site\css\style.css linguist-vendored=false
+.\in_season\static_site\static\static_site\css\style.css linguist-detectable
 *.html linguist-detectable=false
