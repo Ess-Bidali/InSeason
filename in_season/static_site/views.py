@@ -49,14 +49,19 @@ def single(request, product_name, key=""):
 
 def basket(request, product_name="", key=""):
     if product_name and key:
+        print(request.session.items())
         remove_from_basket(request, product_name, key)
+        print(request.session.items())
         return redirect('static_site:basket')
     in_basket = specific_items(request)
     capacity = len(in_basket)
+    total = 0
     products = {}
     for product_name, value in in_basket.items():
-        products.update({Product.objects.get(name__iexact=product_name):value})
-    context = {'nbar': 'basket', 'products': products, 'capacity': capacity}
+        prod = Product.objects.get(name__iexact=product_name)
+        products.update({prod:value})
+        total += [val for val in value.values()][0] * prod.current_price
+    context = {'nbar': 'basket', 'products': products, 'capacity': capacity, 'total': total}
     return render(request, 'static_site/my_basket.html', context)
 
 

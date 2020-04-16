@@ -49,6 +49,8 @@ def remove_from_basket(request, product_name, key):
             del request.session['user_orders']['items'][product_name][key]
             if is_empty(request, product_name):
                 del request.session['user_orders']['items'][product_name]
+            if not request.session['user_orders']['items']:
+                del request.session['user_orders']
             request.session.modified = True
         
 
