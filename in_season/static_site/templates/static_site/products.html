@@ -24,18 +24,21 @@
                 <div class="bottom-area d-flex px-3">
                     <div class="m-auto d-flex">
                         <a href="{% url 'static_site:single_product' product|lower %}" title="More info"
-                            class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                            class="add-to-cart d-flex justify-content-center align-items-center text-center"
+                            data-toggle="tooltip" data-placement="top">
                             <span><i class="ion-ios-menu"></i></span>
                         </a>
                         <a href="{% url 'static_site:single_product' product|lower %}"
                             class="buy-now d-flex justify-content-center align-items-center mx-1"
                             {% if product|lower in in_basket %}style="background: #ed9121;"
-                            title="This item is in your basket" {% else %} title="Add this to my basket" {% endif %}>
+                            title="This item is in your basket" {% else %} title="Add this to my basket" {% endif %} 
+                            data-toggle="tooltip" data-placement="top">
                             <span><i class="ion-ios-cart"></i></span>
                         </a>
                         <a class="heart d-flex justify-content-center align-items-center 
                         {% if not product.amount_available %}bg-secondary"
-                            title="Unavailable" {% else %} " title="Available" {% endif %}>
+                            title="Unavailable" {% else %} " title="Available" {% endif %}
+                            data-toggle="tooltip" data-placement="top">
                             <span><i class="ion-ios-basket"></i></span>
                         </a>
                     </div>

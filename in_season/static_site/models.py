@@ -1,6 +1,7 @@
 from django.db import models
 from decimal import Decimal
 from datetime import datetime
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -36,13 +37,22 @@ class Product(models.Model):
     amount_available = models.IntegerField(null=True)
     image = models.ImageField(upload_to='products/%Y.%m', blank=True, null=True)
 
+    class Meta:
+        ordering=['-id']
+    
     def __str__(self):
         return self.name
 
 
-class User(models.Model):
-    name = models.CharField(max_length=25, blank=True, null=True)
-    contact = models.IntegerField()
+class Phone_Number(models.Model):
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    number = models.IntegerField()
+
+    def __str__(self):
+        return self.number
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=250)
 
     def __str__(self):
@@ -61,7 +71,8 @@ class OrderItem(models.Model):
 
 
 ORDER_STATUS_CHOICES = (
-    ('Not yet dispatched', 'Not yet dispatched'),
+    ('Pending', 'Pending'),
+    ('Placed', 'Placed'),
     ('Dispatched', 'Dispatched'),
     ('In transit', 'In transit'),
     ('Delivered', 'Delivered'),
@@ -69,10 +80,12 @@ ORDER_STATUS_CHOICES = (
 )
 
 class Order(models.Model):
-    status = models.CharField(max_length=120, default='Not yet dispatched', choices=ORDER_STATUS_CHOICES)
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    status = models.CharField(max_length=120, default='Pending', choices=ORDER_STATUS_CHOICES)
     is_ordered = models.BooleanField(default=False)
     products = models.ManyToManyField(OrderItem)
-    date_created = models.DateTimeField(default=datetime.now)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_placed = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.id

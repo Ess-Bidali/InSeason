@@ -428,6 +428,14 @@ AOS.init({
         }
         changeTotal();
     });
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    
+    document.querySelector(".img__btn").addEventListener("click", function () {
+        document.querySelector(".cont").classList.toggle("s--signup");
+    });
     
     
 })(jQuery);

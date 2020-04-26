@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Category, Unit, Currency, Product, Order, OrderItem
 from .helper_functions import filter_results, paginate, add_to_basket, remove_from_basket, items_in_basket, specific_items
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
 
 def index(request):
@@ -67,3 +70,32 @@ def basket(request, product_name="", key=""):
 
 def edit_product(request, product_name, key, act):
     return redirect('static_site:single_product_edit', product_name=product_name, key=key)
+
+
+def register_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username') if request.POST.get('username') else ''
+        password = request.POST.get('password') if request.POST.get('password') else ''
+        email = request.POST.get('email') if request.POST.get('email') else ''
+        if username and password:
+            user = User.objects.create_user(username, password=password)
+            if email: 
+                user.email = email
+                user.save()
+            login(request, user)
+            print(get_object_or_404(User, email=email))
+    return redirect('static_site:checkout')
+
+
+@login_required()
+def checkout(request):
+    in_basket = specific_items(request)
+    capacity = len(in_basket)
+    total = 0
+    products = {}
+    for product_name, value in in_basket.items():
+        prod = Product.objects.get(name__iexact=product_name)
+        products.update({prod:value})
+        total += [val for val in value.values()][0] * prod.current_price
+    context = {'nbar': 'basket', 'products': products, 'capacity': capacity, 'total': total}
+    return render(request, 'static_site/checkout.html', context)
