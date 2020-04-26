@@ -1,11 +1,13 @@
-{% extends './base.html'%} {% block content%} {% load static %}{% load mathfilters %}
+{% extends './base.html' %} {% block content%} {% load static %}{% load mathfilters %}
 
 <div class="hero-wrap hero-bread" style="background-image: url('/static/static_site/images/bg_3a.jpg');">
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
             <div class="col-md-9 ftco-animate text-center">
-                <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'static_site:home' %}">Home</a></span> <span
-                        class="mr-2"><a href="{% url 'static_site:shop' %}">Shop</a></span></p>
+                <p class="breadcrumbs">
+                    <span class="mr-2"><a href="{% url 'static_site:home' %}">Home</a></span>
+                    <span class="mr-2"><a href="{% url 'static_site:shop' %}">Shop</a></span>
+                </p>
                 <h1 class="mb-0 bread">My Shopping Basket</h1>
             </div>
         </div>
@@ -24,18 +26,14 @@
                                 <th>&nbsp;</th>
                                 <th>Product name/Total</th>
                                 <th>Estimated Total(Ksh.)</th>
-                                <th>Unit Price(Ksh.)</th>
-
                             </tr>
                         </thead>
                         <tbody id="basket-products">
-                            {% for product, values in products.items %}
-                            {% for key,amount in values.items %}
+                            {% for product, values in products.items %} {% for key,amount in values.items %}
                             <tr class="text-center" id="{{product}}">
                                 <td class="product-remove">
-                                    <a href="#" class="dropdown-toggle" id="edit-or-delete" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <span class="ion-ios-menu"></span>
+                                    <a href="#" class="dropdown-toggle" id="edit-or-delete" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="icon-menu"></span>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="edit-or-delete">
                                         <a class="dropdown-item" href="{% url 'static_site:basket2' product_name=product.name|lower key=key act='edit'%}">Edit order</a>
@@ -50,15 +48,13 @@
 
                                 <td class="product-name">
                                     <h3>{{product}}s</h3>
-                                    <p>{{key}} ({{amount}}{{product.unit}})</p>
+                                    <p>{{key}} ({{amount}}{{product.unit}})<br> @ {{product.current_price}}</p>
                                 </td>
 
                                 <td class="total" id="{{product}}-total">{{ product.current_price|mul:amount}}</td>
-
-                                <td class="price" id="{{product}}-price">{{product.current_price}}</td>
-                            </tr><!-- END TR-->
-                            {% endfor %}
-                            {% endfor %}
+                            </tr>
+                            <!-- END TR-->
+                            {% endfor %} {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -67,15 +63,18 @@
         <div class="row">
             <div class="col-lg-5 mt-5 cart-wrap ftco-animate">
                 <div class="cart-total mb-3">
-                    <h3>Cart Totals</h3>
+                    <h3>Your Basket Totals</h3>
                     <p class="d-flex">
                         <span>Estimated Total</span>
                         <span>Ksh. {{total}}</span>
                     </p>
-                    
                     <p class="d-flex">
-                        <span>Deal of the day discount</span>
+                        <span>Deal of the day discount (already included)</span>
                         <span>Ksh. 3.00</span>
+                    </p>
+                    <p class="d-flex">
+                        <span>Delivery</span>
+                        <span>Ksh. 0.00</span>
                     </p>
                     <hr>
                     <p class="d-flex total-price">
@@ -83,9 +82,10 @@
                         <span>Ksh. {{total}}</span>
                     </p>
                 </div>
-                <p><a href="" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+                <p><a href="{% url 'static_site:checkout' %}" class="btn btn-primary py-3 px-4">Confirm My Order</a></p>
             </div>
         </div>
     </div>
 </section>
+
 {% endblock %}

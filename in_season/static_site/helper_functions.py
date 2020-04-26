@@ -39,7 +39,6 @@ def add_to_basket(request, product_name):
     #then update the number of items
     request.session['user_orders']['items'][product_name][product_key] += how_many
     request.session.modified = True
-    print(request.session['user_orders']['items'])
 
 
 #helper to remove items from basket
@@ -52,7 +51,7 @@ def remove_from_basket(request, product_name, key):
             if not request.session['user_orders']['items']:
                 del request.session['user_orders']
             request.session.modified = True
-        
+
 
 def items_in_basket(request):
     if 'user_orders' not in request.session:
@@ -64,6 +63,7 @@ def items_in_basket(request):
 def specific_items(request):
     if 'user_orders' not in request.session:
         return {}
+        print(request.session['user_orders']['items'].values())
     return request.session['user_orders']['items']
 
 def is_empty(request, product_key):
