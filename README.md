@@ -6,10 +6,19 @@ This is a website built for a food distribution organization.
 
 Target Features:
 
-1. Static pages with info about the company.
+1. Static webpages with info about the company. - Done
 
-2. A dynamic deal of the day offer.
+2. Dynamic e-commerce, features including: 
+	i. Cart functions 			- Done
+	ii. Customer account(login, profile, etc)- Done
+	iii. Order tracking 			- In progress
+	iv. Invoice/ Receipt generation 	- In progress
+	v. Possibly include a Payment function. - In progress
 
-3. An dynamic online cart, no payment mechanism.(Assumes payment is on delivery)
+3. Staff dashboard. Featuring:
+	i. Staff login				 - In progress
+	ii. Data editing system for some users	 - In progress
+	iii. Data visualization system		 - In progress
+	iv. Report generation system 		- In progress
 
-4. User login, this happens during checkout (when finalizing the order). Items are added to cart based on sessions then actually added to db during checkout to account for incomplete or abandoned orders made
+4. An API. - In progress
