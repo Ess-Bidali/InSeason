@@ -4,3 +4,4 @@ dev
 *.pyc
 __pycache__
 secret_settings.py
+db.sqlite3
