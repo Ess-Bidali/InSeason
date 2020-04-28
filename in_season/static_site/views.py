@@ -72,9 +72,11 @@ def single(request, product_name, edit=""):
         else: 
             add_to_basket(request, product_name)
             if request.user.is_authenticated:
-                customer = get_object_or_404(Customer, user=request.user)
-                order = get_object_or_404(Order, customer=customer, status='Pending')
-                add_to_db_basket(request,product_name, order)   
+                try:                    
+                    customer = get_object_or_404(Customer, user=request.user)
+                    order = get_object_or_404(Order, customer=customer, status='Pending')
+                    add_to_db_basket(request,product_name, order)   
+                except: pass
     context = get_context(request, 'single', related_products)
     context.update({'product': product, "edit": edit})
     return render(request, 'static_site/single_product.html', context)
