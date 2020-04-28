@@ -61,10 +61,13 @@ def single(request, product_name, edit=""):
             add_to_basket(request, product_name)
             
             if request.user.is_authenticated:
-                customer = get_object_or_404(Customer, user=request.user)
-                order = get_object_or_404(Order, customer=customer, status='Pending')
-                remove_from_db_basket(order, key)
-                add_order_items(request,order)
+                try:
+                    customer = get_object_or_404(Customer, user=request.user)
+                    order = get_object_or_404(Order, customer=customer, status='Pending')
+                    remove_from_db_basket(order, key)
+                    add_order_items(request,order)
+                except:
+                    pass
             return redirect('static_site:basket')
         else: 
             add_to_basket(request, product_name)
@@ -81,9 +84,11 @@ def basket(request, product_name="", key=""):
     if product_name and key:
         remove_from_basket(request, product_name, key)
         if request.user.is_authenticated:
-            customer = get_object_or_404(Customer, user=request.user)
-            order = get_object_or_404(Order, customer=customer, status='Pending')
-            remove_from_db_basket(order, key)
+            try:
+                customer = get_object_or_404(Customer, user=request.user)
+                order = get_object_or_404(Order, customer=customer, status='Pending')
+                remove_from_db_basket(order, key)
+            except: pass
         return redirect('static_site:basket')
     products, subtotal, deal, total = get_total_cost(request, DEAL_OF_THE_DAY, DISCOUNT)
     context = get_context(request, 'basket', products)
