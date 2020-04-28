@@ -53,21 +53,10 @@ class Phone_Number(models.Model):
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    location = models.CharField(max_length=250)
+    location = models.CharField(max_length=250, null=True)
 
     def __str__(self):
-        return self.name
-
-
-class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
-
-    def __str__(self):
-        return self.product
-
-    def get_total(self):
-        pass
+        return self.user.username
 
 
 ORDER_STATUS_CHOICES = (
@@ -83,15 +72,27 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
     status = models.CharField(max_length=120, default='Pending', choices=ORDER_STATUS_CHOICES)
     is_ordered = models.BooleanField(default=False)
-    products = models.ManyToManyField(OrderItem)
     date_created = models.DateTimeField(auto_now_add=True)
     date_placed = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     def get_total(self):
         pass
 
     def get_items(self):
+        pass
+
+
+class OrderItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    details = models.CharField(max_length=120, default='Small')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='products')
+
+    def __str__(self):
+        return f'{str(self.product)}_{self.details}_{self.quantity}'
+
+    def get_total(self):
         pass

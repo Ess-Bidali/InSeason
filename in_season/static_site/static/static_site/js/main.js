@@ -3,27 +3,27 @@ AOS.init({
     easing: 'slide'
 });
 
-(function ($) {
+(function($) {
 
     "use strict";
 
     var isMobile = {
-        Android: function () {
+        Android: function() {
             return navigator.userAgent.match(/Android/i);
         },
-        BlackBerry: function () {
+        BlackBerry: function() {
             return navigator.userAgent.match(/BlackBerry/i);
         },
-        iOS: function () {
+        iOS: function() {
             return navigator.userAgent.match(/iPhone|iPad|iPod/i);
         },
-        Opera: function () {
+        Opera: function() {
             return navigator.userAgent.match(/Opera Mini/i);
         },
-        Windows: function () {
+        Windows: function() {
             return navigator.userAgent.match(/IEMobile/i);
         },
-        any: function () {
+        any: function() {
             return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
         }
     };
@@ -39,10 +39,10 @@ AOS.init({
     });
 
 
-    var fullHeight = function () {
+    var fullHeight = function() {
 
         $('.js-fullheight').css('height', $(window).height());
-        $(window).resize(function () {
+        $(window).resize(function() {
             $('.js-fullheight').css('height', $(window).height());
         });
 
@@ -50,8 +50,8 @@ AOS.init({
     fullHeight();
 
     // loader
-    var loader = function () {
-        setTimeout(function () {
+    var loader = function() {
+        setTimeout(function() {
             if ($('#ftco-loader').length > 0) {
                 $('#ftco-loader').removeClass('show');
             }
@@ -62,7 +62,7 @@ AOS.init({
     // Scrollax
     $.Scrollax();
 
-    var carousel = function () {
+    var carousel = function() {
         $('.home-slider').owlCarousel({
             loop: true,
             autoplay: true,
@@ -111,7 +111,7 @@ AOS.init({
     carousel();
 
     //reveal navbar dropdown menu on hover/click
-    $('nav .dropdown').hover(function () {
+    $('nav .dropdown').hover(function() {
         var $this = $(this);
         // 	 timer;
         // clearTimeout(timer);
@@ -119,7 +119,7 @@ AOS.init({
         $this.find('> a').attr('aria-expanded', true);
         // $this.find('.dropdown-menu').addClass('animated-fast fadeInUp show');
         $this.find('.dropdown-menu').addClass('show');
-    }, function () {
+    }, function() {
         var $this = $(this);
         // timer;
         // timer = setTimeout(function(){
@@ -131,8 +131,8 @@ AOS.init({
     });
 
     // scroll
-    var scrollWindow = function () {
-        $(window).scroll(function () {
+    var scrollWindow = function() {
+        $(window).scroll(function() {
             var $w = $(this),
                 st = $w.scrollTop(),
                 navbar = $('.ftco_navbar'),
@@ -171,14 +171,14 @@ AOS.init({
     scrollWindow();
 
 
-    var counter = function () {
+    var counter = function() {
 
-        $('#section-counter').waypoint(function (direction) {
+        $('#section-counter').waypoint(function(direction) {
 
             if (direction === 'down' && !$(this.element).hasClass('ftco-animated')) {
 
                 var comma_separator_number_step = $.animateNumber.numberStepFactories.separator(',')
-                $('.number').each(function () {
+                $('.number').each(function() {
                     var $this = $(this),
                         num = $this.data('number');
                     console.log(num);
@@ -195,20 +195,20 @@ AOS.init({
     }
     counter();
 
-    var contentWayPoint = function () {
+    var contentWayPoint = function() {
         var i = 0;
-        $('.ftco-animate').waypoint(function (direction) {
+        $('.ftco-animate').waypoint(function(direction) {
 
             if (direction === 'down' && !$(this.element).hasClass('ftco-animated')) {
 
                 i++;
 
                 $(this.element).addClass('item-animate');
-                setTimeout(function () {
+                setTimeout(function() {
 
-                    $('body .ftco-animate.item-animate').each(function (k) {
+                    $('body .ftco-animate.item-animate').each(function(k) {
                         var el = $(this);
-                        setTimeout(function () {
+                        setTimeout(function() {
                             var effect = el.data('animate-effect');
                             if (effect === 'fadeIn') {
                                 el.addClass('fadeIn ftco-animated');
@@ -232,15 +232,15 @@ AOS.init({
     contentWayPoint();
 
     // navigation
-    var OnePageNav = function () {
-        $(".smoothscroll[href^='#'], #ftco-nav ul li a[href^='#']").on('click', function (e) {
+    var OnePageNav = function() {
+        $(".smoothscroll[href^='#'], #ftco-nav ul li a[href^='#']").on('click', function(e) {
             e.preventDefault();
 
             var hash = this.hash,
                 navToggler = $('.navbar-toggler');
             $('html, body').animate({
                 scrollTop: $(hash).offset().top
-            }, 700, 'easeInOutExpo', function () {
+            }, 700, 'easeInOutExpo', function() {
                 window.location.hash = hash;
             });
 
@@ -249,66 +249,66 @@ AOS.init({
                 navToggler.click();
             }
         });
-        $('body').on('activate.bs.scrollspy', function () {
+        $('body').on('activate.bs.scrollspy', function() {
             console.log('nice');
         })
     };
     OnePageNav();
 
-    $('.categButton').click(function () {
+    $('.categButton').click(function() {
         $('.categButton.active').removeClass("active");
-        console.log(this);  
-        $(this).addClass("active") 
-        // $.ajax({
-        //     type: 'GET',
-        //     data: { category: this.id },
-        //     success: function (data) {
-        //         data = JSON.parse(data);
-        //         $('#product-row').empty();
-        //         console.log(data);
-        //         let txt = ""
-        //         data.forEach(product => {
-        //             txt += `                    
-        //             <div class="col-md-6 col-lg-3">
-        //                 <div class="product">
-        //                 <a href="#" class="img-prod"><img class="img-fluid" src="${product["fields"]["image"]}" alt="${product["fields"]["name"]} image">
-        //                     <span class="status">30%</span>
-        //                     <div class="overlay"></div>
-        //                 </a>
-        //                     <div class="text py-3 pb-4 px-3 text-center">
-        //                         <h3><a href="#">${product["fields"]["name"]}s</a></h3>
-        //                         <div class="d-flex">
-        //                             <div class="pricing">
-        //                                 <p class="price">
-        //                                     <span class="mr-2 price-dc">ksh. ${product["fields"]['old_price']}</span>
-        //                                     <span class="price-sale">ksh. ${product["fields"]['current_price']}/${product["fields"]['unit']}</span>
-        //                                 </p>
-        //                             </div>
-        //                         </div>
-        //                         <div class="bottom-area d-flex px-3">
-        //                             <div class="m-auto d-flex">
-        //                                 <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-        //                                     <span><i class="ion-ios-menu"></i></span>
-        //                                 </a>
-        //                                 <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-        //                                     <span><i class="ion-ios-cart"></i></span>
-        //                                 </a>
-        //                                 <a href="#" class="heart d-flex justify-content-center align-items-center ">
-        //                                     <span><i class="ion-ios-heart"></i></span>
-        //                                 </a>
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                 </div>
-        //             </div>                    
-        //             `
-        //         });
-        //         $('#product-row').prepend(`
-        //             ${txt}
-        //         `);
-        //         console.log(this);                
-        //     }
-        // });
+        console.log(this);
+        $(this).addClass("active")
+            // $.ajax({
+            //     type: 'GET',
+            //     data: { category: this.id },
+            //     success: function (data) {
+            //         data = JSON.parse(data);
+            //         $('#product-row').empty();
+            //         console.log(data);
+            //         let txt = ""
+            //         data.forEach(product => {
+            //             txt += `                    
+            //             <div class="col-md-6 col-lg-3">
+            //                 <div class="product">
+            //                 <a href="#" class="img-prod"><img class="img-fluid" src="${product["fields"]["image"]}" alt="${product["fields"]["name"]} image">
+            //                     <span class="status">30%</span>
+            //                     <div class="overlay"></div>
+            //                 </a>
+            //                     <div class="text py-3 pb-4 px-3 text-center">
+            //                         <h3><a href="#">${product["fields"]["name"]}s</a></h3>
+            //                         <div class="d-flex">
+            //                             <div class="pricing">
+            //                                 <p class="price">
+            //                                     <span class="mr-2 price-dc">ksh. ${product["fields"]['old_price']}</span>
+            //                                     <span class="price-sale">ksh. ${product["fields"]['current_price']}/${product["fields"]['unit']}</span>
+            //                                 </p>
+            //                             </div>
+            //                         </div>
+            //                         <div class="bottom-area d-flex px-3">
+            //                             <div class="m-auto d-flex">
+            //                                 <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+            //                                     <span><i class="ion-ios-menu"></i></span>
+            //                                 </a>
+            //                                 <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+            //                                     <span><i class="ion-ios-cart"></i></span>
+            //                                 </a>
+            //                                 <a href="#" class="heart d-flex justify-content-center align-items-center ">
+            //                                     <span><i class="ion-ios-heart"></i></span>
+            //                                 </a>
+            //                             </div>
+            //                         </div>
+            //                     </div>
+            //                 </div>
+            //             </div>                    
+            //             `
+            //         });
+            //         $('#product-row').prepend(`
+            //             ${txt}
+            //         `);
+            //         console.log(this);                
+            //     }
+            // });
     });
 
     // magnific popup
@@ -344,9 +344,9 @@ AOS.init({
     });
 
 
-    var goHere = function () {
+    var goHere = function() {
 
-        $('.mouse-icon').on('click', function (event) {
+        $('.mouse-icon').on('click', function(event) {
 
             event.preventDefault();
 
@@ -390,26 +390,26 @@ AOS.init({
 
     }
 
-    setInterval(function () { makeTimer(); }, 1000);
+    setInterval(function() { makeTimer(); }, 1000);
 
     //Single product page
     //display total cost of product order based on quantity and unit price
-    let changeTotal = function(){
+    let changeTotal = function() {
         let text = $('#quantity');
         let costOfEach = parseInt(text.attr("data-each"));
         let totalCost = costOfEach * parseInt(text.val())
         $('#total-cost').val("Ksh. " + totalCost.toFixed(2));
     }
-    
-    $('.quantity-control').click(function(){
+
+    $('.quantity-control').click(function() {
         let operation = $(this).attr("data-type");
         let text = $('#quantity');
         let displayedValue = parseInt(text.val());
         let maximumValue = parseInt(text.attr("data-max"));
         //perform operation on displayed value
-        if (operation == 'plus' && displayedValue < maximumValue){
+        if (operation == 'plus' && displayedValue < maximumValue) {
             text.val(displayedValue + 1);
-        }else if(operation == 'minus' && displayedValue > 1){
+        } else if (operation == 'minus' && displayedValue > 1) {
             text.val(displayedValue - 1);
         }
         //change total amount after operation is done
@@ -418,24 +418,23 @@ AOS.init({
 
 
     // Also change total amount when user types value
-    $('.quantity-input').on("input", function(){
+    $('.quantity-input').on("input", function() {
         //First check if input is valid i.e 1 >= x <= max value
-        if ($(this).val() < 1){
+        if ($(this).val() < 1) {
             $(this).val(1);
-        }
-        else if ($(this).val() > parseInt($(this).attr("data-max"))){
+        } else if ($(this).val() > parseInt($(this).attr("data-max"))) {
             $(this).val($(this).attr("data-max"));
         }
         changeTotal();
     });
 
-    $(function () {
+    $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
-    
-    document.querySelector(".img__btn").addEventListener("click", function () {
+
+    document.querySelector(".img__btn").addEventListener("click", function() {
         document.querySelector(".cont").classList.toggle("s--signup");
     });
-    
-    
+
+
 })(jQuery);

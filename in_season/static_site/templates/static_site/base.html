@@ -75,13 +75,13 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {% if nbar == 'shop' or nbar == 'product' or nbar == 'basket' or nbar == 'checkout' %}active{% endif %}" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown04">
-                            <a class="dropdown-item {% if nbar == 'shop' or nbar == 'single' or nbar == 'checkout' %}active{% endif %}" href="{% url 'static_site:shop'%}">Shop</a>
-                            <a class="dropdown-item {% if nbar == 'basket' %}active{% endif %}" href="{% url 'static_site:basket' %}">My Basket</a> {% if user.is_authenticated and capacity %}
-                            <a class="dropdown-item {% if nbar == 'checkout' %}active{% endif %}" href="#">Checkout</a> {% endif %}
+                            <a class="dropdown-item {% if nbar == 'shop' or nbar == 'single' %}active{% endif %}" href="{% url 'static_site:shop'%}">Shop</a>
+                            <a class="dropdown-item {% if nbar == 'basket' %}active{% endif %}" href="{% url 'static_site:basket' %}">My Basket</a> {% if capacity %}
+                            <a class="dropdown-item {% if nbar == 'checkout' %}active{% endif %}" href="{% url 'static_site:checkout' %}">Checkout</a> {% endif %}
                         </div>
                     </li>
                     <li class="nav-item {% if nbar == 'about' %}active{% endif %}"><a href="#" class="nav-link">About</a></li>
-                    <li class="nav-item {% if nbar == 'contact' %}active{% endif %}"><a href="#" class="nav-link">Contact</a></li>
+                    <li class="nav-item {% if nbar == 'contact' %}active{% endif %}"><a href="{% url 'static_site:contact' %}" class="nav-link">Contact</a></li>
                     <li class="nav-item dropdown {% if user.is_authenticated %}cta{% endif %} cta-colored">
                         <a class="nav-link dropdown-toggle" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-user"></a>
                         <div class="dropdown-menu" aria-labelledby="dropdownUser">
@@ -91,8 +91,8 @@
                             <a class="dropdown-item" href="{% url 'static_site:switch_user' %}">Switch account</a> {% endif %}
                         </div>
                     </li>
-                    <li class="nav-item cta cta-colored"><a href="#" class="nav-link"><span
-                                    class="icon-shopping_cart"></span>[{{capacity}}]</a></li>
+                    <li class="nav-item cta cta-colored"><a href="{% url 'static_site:basket' %}" class="nav-link"><span
+                                    class="icon-shopping_cart"></span><span class="badge badge-dark">{{capacity}}</span></a></li>
                 </ul>
             </div>
         </div>
@@ -129,9 +129,9 @@
                     <div class="ftco-footer-widget mb-4 ml-md-5">
                         <h2 class="ftco-heading-2">Menu</h2>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="py-2 d-block">Shop</a></li>
+                            <li><a href="{% url 'static_site:shop'%}" class="py-2 d-block">Shop</a></li>
                             <li><a href="#" class="py-2 d-block">About</a></li>
-                            <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+                            <li><a href="{% url 'static_site:contact'%}" class="py-2 d-block">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
@@ -142,9 +142,9 @@
                             <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
                                 <li><a href="#" class="py-2 d-block">FAQs</a></li>
                                 <li><a href="#" class="py-2 d-block">Route Information</a></li>
-                                <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
-                                <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
-                                <li><a href="#" class="py-2 d-block">Contact</a></li>
+                                <li><a href="{% url 'static_site:static' 'terms-and-conditions' %}" class="py-2 d-block">Terms &amp; Conditions</a></li>
+                                <li><a href="{% url 'static_site:static' 'privacy-policy' %}" class="py-2 d-block">Privacy Policy</a></li>
+                                <li><a href="{% url 'static_site:contact'%}" class="py-2 d-block">Contact</a></li>
                             </ul>
 
                         </div>
