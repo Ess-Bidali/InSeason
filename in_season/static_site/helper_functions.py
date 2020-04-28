@@ -1,10 +1,19 @@
 from django.core.paginator import Paginator
 from django.core import serializers
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
+from .models import Product, OrderItem
+from django.shortcuts import get_object_or_404
 
+
+#common context parameters
+def get_context(request, n_bar='home', products={} ):
+    in_basket = specific_items(request)
+    capacity = get_capacity(in_basket)
+    context = {'nbar': n_bar, 'products': products, 'in_basket': in_basket, 'capacity': capacity}
+    return context
 
 #helper method for returning a json response when method is ajax views.shop()
-def filter_results(products):
+def get_json_respose(products):
     data = serializers.serialize('json', products)
     return JsonResponse(data, safe=False)
 
@@ -41,6 +50,17 @@ def add_to_basket(request, product_name):
     request.session.modified = True
 
 
+def add_to_db_basket(request, product_name, order_obj):
+    quantity = int(request.POST.get('quantity'))
+    detail = request.POST.get('size')
+    product = Product.objects.get(name__iexact=product_name)
+    try: 
+        order_item = get_object_or_404(OrderItem, order=order_obj, product=product, details=detail)
+    except Http404: 
+        order_item = OrderItem.objects.create(order=order_obj, product=product, details=detail)
+    order_item.quantity = quantity
+    order_item.save()
+
 #helper to remove items from basket
 def remove_from_basket(request, product_name, key):
     if product_name in request.session['user_orders']['items']:
@@ -53,18 +73,60 @@ def remove_from_basket(request, product_name, key):
             request.session.modified = True
 
 
-def items_in_basket(request):
-    if 'user_orders' not in request.session:
-        return []
-    ans = [product for product in request.session['user_orders']['items'].keys()]
-    return ans
+def remove_from_db_basket(order, key):
+    product_name = key.split('_')[0]
+    product = get_object_or_404(Product, name__iexact=product_name)
+    details = key.split('_')[1]
+    order_item = get_object_or_404(OrderItem, order=order, product=product, details=details)
+    print(order_item)
+    print(order_item.delete())
 
 
 def specific_items(request):
     if 'user_orders' not in request.session:
         return {}
-        print(request.session['user_orders']['items'].values())
     return request.session['user_orders']['items']
+
+
+def get_capacity(in_basket):
+    capacity = 0
+    for key,value in in_basket.items():
+        for key, val in value.items():
+            capacity += 1
+    return capacity
+
+def get_total_cost(request, DEAL_OF_THE_DAY, DISCOUNT):
+    in_basket = specific_items(request)
+    total = 0
+    products = {}
+    deal = 0
+    for product_name, value in in_basket.items():
+        prod = Product.objects.get(name__iexact=product_name)
+        products.update({prod:value})
+        if product_name == DEAL_OF_THE_DAY:
+            deal += [val for val in value.values()][0] * DISCOUNT
+        total += [val for val in value.values()][0] * prod.current_price
+    subtotal = total + deal
+    return products, subtotal, deal, total
+
 
 def is_empty(request, product_key):
     return not request.session['user_orders']['items'][product_key]
+
+
+def add_order_items(request, order_obj):
+    order_requests = specific_items(request)
+    order_items = []
+    for product_name,values in order_requests.items():
+        for specific,val in values.items():
+            detail = specific.split('_')[1]
+            product = Product.objects.get(name__iexact=product_name)
+            try: 
+                order_item = get_object_or_404(OrderItem, order=order_obj, product=product, details=detail)
+            except Http404: 
+                order_item = OrderItem.objects.create(order=order_obj, product=product, details=detail)
+            order_item.quantity = val
+            order_item.save()
+            order_items.append(order_item)
+            print(order_items)
+    return order_items

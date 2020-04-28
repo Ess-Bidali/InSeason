@@ -11723,6 +11723,11 @@ h5,
     color: #fff;
 }
 
+.product-category li a:hover {
+    background: #82ae46;
+    color: #fff;
+}
+
 .ftco-product .owl-carousel .owl-stage-outer {
     padding-bottom: 2em;
     position: relative;
@@ -12275,7 +12280,7 @@ h5,
     padding-left: 15px;
     padding-right: 15px;
     background: transparent !important;
-    color: rgba(0, 0, 0, 0.4) !important;
+    color: #000000 !important;
     font-size: 14px;
     border-radius: 0px;
     -webkit-box-shadow: none !important;
@@ -13872,9 +13877,7 @@ textarea.form-control {
     transition: transform 1.2s ease-in-out;
 }
 
-
 /* image overlay */
-
 #form-bod .img::after {
     content: "";
     position: absolute;

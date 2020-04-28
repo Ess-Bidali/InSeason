@@ -109,15 +109,10 @@
                     </div>
                 </div>
                 <div class="pb-md-5">
-                    <p>Your business is your livelihood. Which is why we, at <em><b>In Season</b></em>, have dedicated
-                        our business to providing you with quality, affordable product that will keep your customers
-                        happy. We specialize in delivering these products
-                        right to your stall/duka or place of business, thus saving you the time, cost and hustle of
-                        going to the market yourself.
+                    <p>Your business is your livelihood. Which is why we, at <em><b>In Season</b></em>, have dedicated our business to providing you with quality, affordable product that will keep your customers happy. We specialize in delivering these products
+                        right to your stall/duka or place of business, thus saving you the time, cost and hustle of going to the market yourself.
                     </p>
-                    <p>You can call us to make your order or go ahead and make your order online. Our contacts are
-                        available 24/7 and are happy to answer all your enquiries, but first, visit our Help section and
-                        check out frequently asked questions, for
+                    <p>You can call us to make your order or go ahead and make your order online. Our contacts are available 24/7 and are happy to answer all your enquiries, but first, visit our Help section and check out frequently asked questions, for
                         more information.
                     </p>
                     <a href="{% url 'static_site:shop' %}" class="btn btn-primary">Shop now</a></p>
@@ -154,11 +149,10 @@
             <div class="col-md-6 heading-section ftco-animate  ftco-animate">
                 <span class="subheading">Best Price For You</span>
                 <h2 class="mb-4">Deal of the day</h2>
-                <p>Order your avocados today. Different sized, both ripe and unripe available at a discounted price
-                    today.
+                <p>Order your {{deal.name|lower}} today. Different sized, both ripe and unripe available at a discounted price today.
                 </p>
-                <h3><a href="#">Avocado</a></h3>
-                <span class="price">ksh. 20 <a href="#">now ksh. 17 only</a> per piece</span>
+                <h3><a href="#">{{deal}}</a></h3>
+                <span class="price">ksh. {{deal.old_price}} <a href="{% url 'static_site:single_product' deal|lower %}">now ksh. {{deal.current_price}} only</a> per {{deal.unit}}</span>
                 <div id="timer" class="d-flex mt-5">
                     <div class="time" id="days"></div>
                     <div class="time pl-3" id="hours"></div>
@@ -183,15 +177,13 @@
                 <div class="carousel-testimony owl-carousel">
                     <div class="item">
                         <div class="testimony-wrap p-4 pb-5">
-                            <div class="user-img mb-5"
-                                style="background-image: url(/static/static_site/images/person_1.jpg)">
+                            <div class="user-img mb-5" style="background-image: url(/static/static_site/images/person_1.jpg)">
                                 <span class="quote d-flex align-items-center justify-content-center">
                                     <i class="icon-quote-left"></i>
                                 </span>
                             </div>
                             <div class="text text-center">
-                                <p class="mb-5 pl-4 line">They have the best product and always deliver on time. I
-                                    couldn't be happier.</p>
+                                <p class="mb-5 pl-4 line">They have the best product and always deliver on time. I couldn't be happier.</p>
                                 <p class="name">Brian Maingi</p>
                                 <span class="position">Kaloleni</span>
                             </div>
@@ -199,15 +191,13 @@
                     </div>
                     <div class="item">
                         <div class="testimony-wrap p-4 pb-5">
-                            <div class="user-img mb-5"
-                                style="background-image: url(/static/static_site/images/person_4.jpg)">
+                            <div class="user-img mb-5" style="background-image: url(/static/static_site/images/person_4.jpg)">
                                 <span class="quote d-flex align-items-center justify-content-center">
                                     <i class="icon-quote-left"></i>
                                 </span>
                             </div>
                             <div class="text text-center">
-                                <p class="mb-5 pl-4 line">I have worked with them for a while now. I can't wait till
-                                    they start supplying all of my products.</p>
+                                <p class="mb-5 pl-4 line">I have worked with them for a while now. I can't wait till they start supplying all of my products.</p>
                                 <p class="name">Mama Achieng'</p>
                                 <span class="position">Donholm</span>
                             </div>
@@ -215,8 +205,7 @@
                     </div>
                     <div class="item">
                         <div class="testimony-wrap p-4 pb-5">
-                            <div class="user-img mb-5"
-                                style="background-image: url(/static/static_site/images/person_2.jpg)">
+                            <div class="user-img mb-5" style="background-image: url(/static/static_site/images/person_2.jpg)">
                                 <span class="quote d-flex align-items-center justify-content-center">
                                     <i class="icon-quote-left"></i>
                                 </span>

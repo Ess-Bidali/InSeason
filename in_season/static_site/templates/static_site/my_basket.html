@@ -36,7 +36,7 @@
                                         <span class="icon-menu"></span>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="edit-or-delete">
-                                        <a class="dropdown-item" href="{% url 'static_site:basket2' product_name=product.name|lower key=key act='edit'%}">Edit order</a>
+                                        <a class="dropdown-item" href="{% url 'static_site:single_product_edit' product.name|lower key %}">Edit order</a>
                                         <a class="dropdown-item" href="{% url 'static_site:basket' product|lower key %}">Remove from
                                             basket</a>
                                     </div>
@@ -66,11 +66,11 @@
                     <h3>Your Basket Totals</h3>
                     <p class="d-flex">
                         <span>Estimated Total</span>
-                        <span>Ksh. {{total}}</span>
+                        <span>Ksh. {{subtotal}}</span>
                     </p>
                     <p class="d-flex">
-                        <span>Deal of the day discount (already included)</span>
-                        <span>Ksh. 3.00</span>
+                        <span>Deal of the day discount</span>
+                        <span>- Ksh. {{deal}}</span>
                     </p>
                     <p class="d-flex">
                         <span>Delivery</span>
@@ -82,7 +82,10 @@
                         <span>Ksh. {{total}}</span>
                     </p>
                 </div>
-                <p><a href="{% url 'static_site:checkout' %}" class="btn btn-primary py-3 px-4">Confirm My Order</a></p>
+                <p>
+                    <a href="{% url 'static_site:checkout' %}" class="btn btn-primary py-3 px-4 {% if not capacity %}btn-link disabled{% endif %}">
+                        Confirm My Order</a>
+                </p>
             </div>
         </div>
     </div>
