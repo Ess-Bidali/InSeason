@@ -45,15 +45,16 @@ class Product(models.Model):
 
 
 class Phone_Number(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="phone_number")
     number = models.IntegerField()
 
     def __str__(self):
-        return self.number
+        return str(self.number)
+
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    location = models.CharField(max_length=250, null=True)
+    location = models.CharField(max_length=400, blank=True, null=True)
 
     def __str__(self):
         return self.user.username
@@ -70,6 +71,9 @@ ORDER_STATUS_CHOICES = (
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    addressee = models.CharField(max_length=350)
+    contact = models.ForeignKey(Phone_Number, null=True, on_delete=models.SET_NULL)
+    location = models.CharField(max_length=400, blank=True, null=True)
     status = models.CharField(max_length=120, default='Pending', choices=ORDER_STATUS_CHOICES)
     is_ordered = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)

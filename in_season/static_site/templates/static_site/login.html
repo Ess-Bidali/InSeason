@@ -52,16 +52,16 @@
                         <div class="form sign-up">
                             <h2>Time to feel like home,</h2>
                             <label>
-                                <span>{{ form.username.label_tag }}</span>
+                                <span>Name</span>
                                 {{ form.username }}
                             </label>
                             <label>
                                 <span>Phone Number</span>
-                                <input type="tel" placeholder="0712 345 678">
+                                <input type="tel" name="phone" placeholder="0712 345 678" required>
                             </label>
                             <label>
                                 <span>Email</span>
-                                <input type="email" name="email" placeholder="example@gmail.com" required>
+                                <input type="email" name="email" placeholder="example@gmail.com">
                             </label>
                             <label>
                                 <span>{{ form.password.label_tag }}</span>
