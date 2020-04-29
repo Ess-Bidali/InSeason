@@ -12,7 +12,8 @@
                             {% if form.errors %}
                             <p class="info">Your username and password didn't match. Please try again.</p>
                             {% endif %} {% if next %} {% if user.is_authenticated %}
-                            <p class="info">Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+                            <p class="info">Your account doesn't have access to this page. To proceed, please login with
+                                an account that has access.</p>
                             {% endif %} {% endif %}
                         </div>
                         <label>
@@ -27,9 +28,14 @@
                         <p class="forgot-pass">Forgot password?</p>
                         <button type="submit" class="submit" value="login">Log In</button>
                         <button type="button" class="fb-btn">Log in with <span>facebook</span></button>
-                        <!-- <p class="forgot-pass"><b>If this is your first time here, <span class="img__btn3">
-                        Sign up</span> instead.</b></p> -->
-                        <input type="hidden" name="next" value="{{ next }}">
+                        <!-- <div class="small-device-login-toggle">
+                            <p class="forgot-pass"><b>If this is your first time here, Sign up instead.</p>
+                                <div class="img__btn2">
+                                    <span class="m--up">Sign Up</span>
+                                    <span class="m--in">Log In</span>
+                                </div>
+                            <input type="hidden" name="next" value="{{ next }}">
+                        </div> -->
                     </div>
                 </form>
                 <div class="sub-cont">
@@ -40,17 +46,20 @@
                         </div>
                         <div class="img__text m--in">
                             <h2>Are you already one of us?</h2>
-                            <p>If you already filled these before, just click "Sign in" below to log into your account. We've missed you!</p>
+                            <p>If you already filled these before, just click "Sign in" below to log into your account.
+                                We've missed you!</p>
                         </div>
                         <div class="img__btn">
                             <span class="m--up">Sign Up</span>
                             <span class="m--in">Log In</span>
                         </div>
                     </div>
-                    <form method="post" action="{% url 'static_site:register' %}" oninput='up2.setCustomValidity(up2.value != password.value ? "Passwords do not match." : "")'>
+                    <form method="post" action="{% url 'static_site:register' %}"
+                        oninput='up2.setCustomValidity(up2.value != password.value ? "Passwords do not match." : "")'>
                         {% csrf_token %}
                         <div class="form sign-up">
                             <h2>Time to feel like home,</h2>
+                            <!-- <p class="forgot-pass"><b>If this is your first time here, Sign up instead.</p> -->
                             <label>
                                 <span>Name</span>
                                 {{ form.username }}
