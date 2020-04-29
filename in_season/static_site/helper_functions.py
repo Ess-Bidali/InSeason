@@ -73,13 +73,15 @@ def remove_from_basket(request, product_name, key):
             request.session.modified = True
 
 
+def clear_basket(request):
+    del request.session['user_orders']
+
 def remove_from_db_basket(order, key):
     product_name = key.split('_')[0]
     product = get_object_or_404(Product, name__iexact=product_name)
     details = key.split('_')[1]
     order_item = get_object_or_404(OrderItem, order=order, product=product, details=details)
-    print(order_item)
-    print(order_item.delete())
+    order_item.delete()
 
 
 def specific_items(request):
@@ -128,5 +130,4 @@ def add_order_items(request, order_obj):
             order_item.quantity = val
             order_item.save()
             order_items.append(order_item)
-            print(order_items)
     return order_items

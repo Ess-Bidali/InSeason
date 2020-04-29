@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Category, Unit, Currency, Product, Order, OrderItem, Customer
-from .helper_functions import get_json_respose, paginate, add_to_basket, remove_from_basket, get_context, get_total_cost, add_order_items, remove_from_db_basket, add_to_db_basket
+from .models import Category, Unit, Currency, Product, Order, OrderItem, Customer, Phone_Number
+from .helper_functions import get_json_respose, paginate, add_to_basket, remove_from_basket, get_context, get_total_cost, add_order_items, remove_from_db_basket, add_to_db_basket, clear_basket
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -100,18 +100,47 @@ def basket(request, product_name="", key=""):
 
 @login_required()
 def checkout(request):
-    #get customer or create new customer
-    try: customer = get_object_or_404(Customer, user=request.user)
-    except Http404: customer = Customer.objects.create(user=request.user)
-    
-    #get existing unplaced order from same user or create a new one
-    try: order = get_object_or_404(Order, customer=customer, status='Pending')
-    except Http404: order = Order.objects.create(customer=customer)
-    
-    #create order item object list for all the orders stored in session data
-    order_items = add_order_items(request, order)
-    print(order)
+    if request.method == 'POST':
+        #compulsory fields
+        firstname = request.POST.get('firstname')
+        county = request.POST.get('county')
+        route = request.POST.get('route') 
+        street_address = request.POST.get('street')
+        phone_number = request.POST.get('phone')
+        #optional fields
+        lastname = request.POST.get('lastname') if request.POST.get('lastname') else ''
+        extra = request.POST.get('extra').replace(',',' ') if request.POST.get('extra') else ''
+        #add info to order object 
+        fullname = f'{firstname}_{lastname}'
+        location = f'{extra}, {street_address}, {route}, {county}'
+        #grab this customer's unplaced order
+        customer = Customer.objects.get(user=request.user)
+        order = get_object_or_404(Order, customer=customer, status='Pending')
+        try: phone_number = get_object_or_404(Phone_Number, number=phone_number)
+        except: phone_number = Phone_Number.objects.create(user=request.user, number=phone_number)
+        order.addressee = fullname
+        order.contact = phone_number
+        order.location = location
+        customer.location = location
+        order.status = 'Placed'
+        order.is_ordered = True
+        order.save()
+        print(order.is_ordered)
+        clear_basket(request)
+        return redirect('static_site:shop')
     products, subtotal, deal, total = get_total_cost(request, DEAL_OF_THE_DAY, DISCOUNT)
+    #if any product order was placed
+    if products:
+        #get customer or create new customer
+        try: customer = get_object_or_404(Customer, user=request.user)
+        except Http404: customer = Customer.objects.create(user=request.user)
+        #get existing unplaced order from same user or create a new one
+        try: order = get_object_or_404(Order, customer=customer, status='Pending')
+        except Http404: order = Order.objects.create(customer=customer)
+        #create order item object list for all the orders stored in session data
+        order_items = add_order_items(request, order)
+    else:
+        return redirect('static_site:shop')
     context = get_context(request, 'checkout', products)
     context.update({'total': total, 'deal': deal, 'subtotal': subtotal})
     return render(request, 'static_site/checkout.html', context)
@@ -122,10 +151,13 @@ def register_user(request):
         username = request.POST.get('username') if request.POST.get('username') else ''
         password = request.POST.get('password') if request.POST.get('password') else ''
         email = request.POST.get('email') if request.POST.get('email') else ''
+        phone_number = request.POST.get('phone') if request.POST.get('phone') else ''
         if username and password:
             user = User.objects.create_user(username, password=password)
+            if phone_number:
+                phone_number = Phone_Number.objects.create(user=user, number=phone_number)                
             if email: 
                 user.email = email
-                user.save()
+            user.save()
             login(request, user)
     return redirect('static_site:checkout')
