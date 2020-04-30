@@ -80,7 +80,7 @@
                             <a class="dropdown-item {% if nbar == 'checkout' %}active{% endif %}" href="{% url 'static_site:checkout' %}">Checkout</a> {% endif %}
                         </div>
                     </li>
-                    <li class="nav-item {% if nbar == 'about' %}active{% endif %}"><a href="#" class="nav-link">About</a></li>
+                    <li class="nav-item {% if nbar == 'about' %}active{% endif %}"><a href="{% if nbar != 'home' %}#{% else %}#about{% endif %}" class="nav-link">About</a></li>
                     <li class="nav-item {% if nbar == 'contact' %}active{% endif %}"><a href="{% url 'static_site:contact' %}" class="nav-link">Contact</a></li>
                     <li class="nav-item dropdown {% if user.is_authenticated %}cta{% endif %} cta-colored">
                         <a class="nav-link dropdown-toggle" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-user"></a>

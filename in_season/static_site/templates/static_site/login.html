@@ -28,13 +28,14 @@
                         <p class="forgot-pass">Forgot password?</p>
                         <button type="submit" class="submit" value="login">Log In</button>
                         <button type="button" class="fb-btn">Log in with <span>facebook</span></button>
+                        <input type="hidden" name="next" value="{{ next }}">
                         <!-- <div class="small-device-login-toggle">
                             <p class="forgot-pass"><b>If this is your first time here, Sign up instead.</p>
                                 <div class="img__btn2">
                                     <span class="m--up">Sign Up</span>
                                     <span class="m--in">Log In</span>
                                 </div>
-                            <input type="hidden" name="next" value="{{ next }}">
+                            
                         </div> -->
                     </div>
                 </form>
@@ -66,7 +67,7 @@
                             </label>
                             <label>
                                 <span>Phone Number</span>
-                                <input type="tel" name="phone" placeholder="0712 345 678" required>
+                                <input type="number" name="phone" placeholder="0712 345 678" required>
                             </label>
                             <label>
                                 <span>Email</span>

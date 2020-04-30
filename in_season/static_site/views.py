@@ -1,11 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Category, Unit, Currency, Product, Order, OrderItem, Customer, Phone_Number
-from .helper_functions import get_json_respose, paginate, add_to_basket, remove_from_basket, get_context, get_total_cost, add_order_items, remove_from_db_basket, add_to_db_basket, clear_basket
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
 from decimal import *
 from django.http import Http404
+from .forms import CustomerDetailsForm
+from django.contrib.auth.models import User
+from .logged_user_functions import complete_order
+from .models import Category, Product, Phone_Number
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect, get_object_or_404
+from .static_helper_functions import get_json_respose, paginate, get_context
+from .helper_functions import add_to_basket, remove_from_basket, get_total_cost, clear_basket, edit_basket_item, add_all_orders_to_db
 
 DEAL_OF_THE_DAY = 'avocado'
 DISCOUNT = Decimal('3.00')
@@ -35,48 +38,34 @@ def shop(request, category=''):
     #if category is provided, perform filter, else grab all products
     if category:
         category = category[:-1]
-        cat = Category.objects.filter(name__iexact=category)[0]
-        products = cat.product_set.all() #all products under this category
+        categ_object = Category.objects.filter(name__iexact=category)[0]
+        products = categ_object.product_set.all() #all products contained in this category
 
         #if request is ajax, return filtered products as a json object
         if request.is_ajax(): return get_json_respose(products)            
     else:
         products = Product.objects.all()
-    categs = Category.objects.all()
+    categs = Category.objects.all() #all categories
     products = paginate(request, products)
-    filtr = category
     context = get_context(request, 'shop', products)
-    context.update({'categs': categs, 'filtr':filtr})
+    context.update({'categs': categs, 'filtr': category})
     return render(request, 'static_site/shop.html', context)
 
 
 def single(request, product_name, edit=""):
-    product = get_object_or_404(Product,name__iexact=product_name).id
-    product = Product.objects.get(id=product)
-    related_products = Product.objects.filter(category=product.category).exclude(id=product.id)
+    product = get_object_or_404(Product,name__iexact=product_name)    
     if request.method == "POST":
+        # If a key has been passed then it is an edit request
         if request.POST.get('key'):
-            key = request.POST.get('key')
-            remove_from_basket(request, product_name, key)
-            add_to_basket(request, product_name)
-            
-            if request.user.is_authenticated:
-                try:
-                    customer = get_object_or_404(Customer, user=request.user)
-                    order = get_object_or_404(Order, customer=customer, status='Pending')
-                    remove_from_db_basket(order, key)
-                    add_order_items(request,order)
-                except:
-                    pass
+            product_key = request.POST.get('key')
+            edit_basket_item(request, product_name, product_key)
             return redirect('static_site:basket')
+
+        # If there is no key, then simply add item to basket
         else: 
-            add_to_basket(request, product_name)
-            if request.user.is_authenticated:
-                try:                    
-                    customer = get_object_or_404(Customer, user=request.user)
-                    order = get_object_or_404(Order, customer=customer, status='Pending')
-                    add_to_db_basket(request,product_name, order)   
-                except: pass
+            add_to_basket(request, product_name) 
+    
+    related_products = Product.objects.filter(category=product.category).exclude(id=product.id)
     context = get_context(request, 'single', related_products)
     context.update({'product': product, "edit": edit})
     return render(request, 'static_site/single_product.html', context)
@@ -84,13 +73,7 @@ def single(request, product_name, edit=""):
 
 def basket(request, product_name="", key=""):
     if product_name and key:
-        remove_from_basket(request, product_name, key)
-        if request.user.is_authenticated:
-            try:
-                customer = get_object_or_404(Customer, user=request.user)
-                order = get_object_or_404(Order, customer=customer, status='Pending')
-                remove_from_db_basket(order, key)
-            except: pass
+        remove_from_basket(request, product_name, key)        
         return redirect('static_site:basket')
     products, subtotal, deal, total = get_total_cost(request, DEAL_OF_THE_DAY, DISCOUNT)
     context = get_context(request, 'basket', products)
@@ -101,48 +84,20 @@ def basket(request, product_name="", key=""):
 @login_required()
 def checkout(request):
     if request.method == 'POST':
-        #compulsory fields
-        firstname = request.POST.get('firstname')
-        county = request.POST.get('county')
-        route = request.POST.get('route') 
-        street_address = request.POST.get('street')
-        phone_number = request.POST.get('phone')
-        #optional fields
-        lastname = request.POST.get('lastname') if request.POST.get('lastname') else ''
-        extra = request.POST.get('extra').replace(',',' ') if request.POST.get('extra') else ''
-        #add info to order object 
-        fullname = f'{firstname}_{lastname}'
-        location = f'{extra}, {street_address}, {route}, {county}'
-        #grab this customer's unplaced order
-        customer = Customer.objects.get(user=request.user)
-        order = get_object_or_404(Order, customer=customer, status='Pending')
-        try: phone_number = get_object_or_404(Phone_Number, number=phone_number)
-        except: phone_number = Phone_Number.objects.create(user=request.user, number=phone_number)
-        order.addressee = fullname
-        order.contact = phone_number
-        order.location = location
-        customer.location = location
-        order.status = 'Placed'
-        order.is_ordered = True
-        order.save()
-        print(order.is_ordered)
-        clear_basket(request)
-        return redirect('static_site:shop')
-    products, subtotal, deal, total = get_total_cost(request, DEAL_OF_THE_DAY, DISCOUNT)
-    #if any product order was placed
-    if products:
-        #get customer or create new customer
-        try: customer = get_object_or_404(Customer, user=request.user)
-        except Http404: customer = Customer.objects.create(user=request.user)
-        #get existing unplaced order from same user or create a new one
-        try: order = get_object_or_404(Order, customer=customer, status='Pending')
-        except Http404: order = Order.objects.create(customer=customer)
-        #create order item object list for all the orders stored in session data
-        order_items = add_order_items(request, order)
+        #validate input and addign to variables
+        form = CustomerDetailsForm(request.POST)
+        if form.is_valid():
+            complete_order(request, form)
+            clear_basket(request)
     else:
-        return redirect('static_site:shop')
+        form = CustomerDetailsForm()    
+    products, subtotal, deal, total = get_total_cost(request, DEAL_OF_THE_DAY, DISCOUNT)
+    #if any product order was placed, redirect to shop else, go to checkout
+    if not products: return redirect('static_site:shop')
+    #create order item object list for all the orders stored in session data
+    order_items = add_all_orders_to_db(request)        
     context = get_context(request, 'checkout', products)
-    context.update({'total': total, 'deal': deal, 'subtotal': subtotal})
+    context.update({'total': total, 'deal': deal, 'subtotal': subtotal, 'form':form})
     return render(request, 'static_site/checkout.html', context)
 
 
