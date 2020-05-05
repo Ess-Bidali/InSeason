@@ -35,12 +35,13 @@ def add_to_basket(request, product_name):
 
 
 def edit_basket_item(request, product_name, product_key):
-    remove_from_basket(request, product_name, product_key)
+    action = 'edit'
+    remove_from_basket(request, product_name, product_key, action)
     add_to_basket(request, product_name)
 
 
 #helper to remove items from basket
-def remove_from_basket(request, product_name, key):
+def remove_from_basket(request, product_name, key, action='delete'):
     if product_name in request.session['user_orders']['items']:
         if key in request.session['user_orders']['items'][product_name]:
             del request.session['user_orders']['items'][product_name][key]
@@ -51,7 +52,7 @@ def remove_from_basket(request, product_name, key):
             request.session.modified = True
     if request.user.is_authenticated:
         order = get_order(request)
-        remove_from_db_basket(order, key)
+        remove_from_db_basket(order, key, action)
 
 
 def clear_basket(request):
