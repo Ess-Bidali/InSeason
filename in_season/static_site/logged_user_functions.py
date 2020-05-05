@@ -28,12 +28,14 @@ def add_to_db_basket(request, product_name, order_obj, detail='', quantity=''):
     return order_item
 
 
-def remove_from_db_basket(order, key):
+def remove_from_db_basket(order, key, action='edit'):
     product_name = key.split('_')[0]
     product = get_object_or_404(Product, name__iexact=product_name)
     details = key.split('_')[1]
     order_item = get_object_or_404(OrderItem, order=order, product=product, details=details)
     order_item.delete()
+    if action == 'delete' and not OrderItem.objects.filter(order=order):
+        order.delete()
 
 
 def complete_order(request, form):

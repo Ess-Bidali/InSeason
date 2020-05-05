@@ -15,7 +15,7 @@ urlpatterns = [
     path('shop/product/<str:product_name>', views.single, name='single_product'),
     path('shop/product/<str:product_name>/<str:edit>', views.single, name='single_product_edit'),
     path('shop/basket/', views.basket, name='basket'),
-    path('shop/basket/<str:product_name>/<str:key>', views.basket, name='basket'),
+    path('shop/basket/<str:product_name>/<str:key>', views.basket, name='delete'),
     path('shop/checkout/', views.checkout, name='checkout'),
 # Account settings/pages 
     path('accounts/login/', auth_views.LoginView.as_view(template_name='static_site/login.html'), name='login'),

@@ -37,7 +37,7 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="edit-or-delete">
                                         <a class="dropdown-item" href="{% url 'static_site:single_product_edit' product.name|lower key %}">Edit order</a>
-                                        <a class="dropdown-item" href="{% url 'static_site:basket' product|lower key %}">Remove from
+                                        <a class="dropdown-item" href="{% url 'static_site:delete' product|lower key %}">Remove from
                                             basket</a>
                                     </div>
                                 </td>

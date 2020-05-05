@@ -1,6 +1,6 @@
 from decimal import *
 from django.http import Http404
-from .forms import CustomerDetailsForm
+from .forms import CheckoutForm
 from django.contrib.auth.models import User
 from .logged_user_functions import complete_order
 from .models import Category, Product, Phone_Number
@@ -15,6 +15,7 @@ DISCOUNT = Decimal('3.00')
 
 def index(request):
     products = Product.objects.all()[:4]
+    # deal = Product.objects.filter(name__iexact=DEAL_OF_THE_DAY)
     deal = get_object_or_404(Product, name__iexact=DEAL_OF_THE_DAY)
     context = get_context(request, 'home', products)
     context.update({'deal': deal})
@@ -26,7 +27,7 @@ def static_pages(request, page):
     if page == 'terms-and-conditions': return render(request, 'static_site/terms.html', context)
     elif page == 'privacy-policy': return render(request, 'static_site/privacy_policy.html', context)
     elif page == 'FAQs': return render(request, 'static_site/faqs.html', context)
-    else : return render(request, 'static_site/privacy_policy.html', context)
+    else : return render(request, 'static_site/index.html', context)
 
 
 def contact(request):
@@ -55,8 +56,8 @@ def shop(request, category=''):
 def single(request, product_name, edit=""):
     product = get_object_or_404(Product,name__iexact=product_name)    
     if request.method == "POST":
-        # If a key has been passed then it is an edit request
         if request.POST.get('key'):
+        # If a key has been passed then it is an edit request
             product_key = request.POST.get('key')
             edit_basket_item(request, product_name, product_key)
             return redirect('static_site:basket')
@@ -85,12 +86,12 @@ def basket(request, product_name="", key=""):
 def checkout(request):
     if request.method == 'POST':
         #validate input and addign to variables
-        form = CustomerDetailsForm(request.POST)
+        form = CheckoutForm(request.POST)
         if form.is_valid():
             complete_order(request, form)
             clear_basket(request)
     else:
-        form = CustomerDetailsForm()    
+        form = CheckoutForm()    
     products, subtotal, deal, total = get_total_cost(request, DEAL_OF_THE_DAY, DISCOUNT)
     #if any product order was placed, redirect to shop else, go to checkout
     if not products: return redirect('static_site:shop')

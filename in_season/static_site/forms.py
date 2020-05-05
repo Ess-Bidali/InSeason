@@ -2,7 +2,7 @@ from django import forms
 
 COUNTY_CHOICES = [('Nairobi', 'Nairobi')]
 
-class CustomerDetailsForm(forms.Form):
+class CheckoutForm(forms.Form):
     first_name = forms.CharField(label="First Name*", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(label="Last Name (Optional)", max_length=100, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
     county = forms.ChoiceField(label="County*", widget=forms.Select(attrs={'class': 'form-control'}), choices=COUNTY_CHOICES)
