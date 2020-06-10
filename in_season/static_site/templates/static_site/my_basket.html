@@ -29,8 +29,10 @@
                                     <div class="dropdown-menu" aria-labelledby="edit-or-delete">
                                         <!-- <input type="submit" class="dropdown-item" href="{% url 'static_site:single_product_edit' product.name|lower key %}" value="Edit order"> -->
                                         <a class="dropdown-item" href="{% url 'static_site:single_product_edit' product.name|lower key %}">Edit order</a>
-                                        <a class="dropdown-item basketAction" data-product="{{product|lower}}" data-key="{{key}}">Remove from
+                                        <a class="dropdown-item basketAction" href="{% url 'static_site:delete' product|lower key %}">Remove from
                                             basket</a>
+                                        <!-- <a class="dropdown-item basketAction" data-product="{{product|lower}}" data-key="{{key}}">Remove from
+                                            basket</a> -->
                                         <!-- <a class="dropdown-item" href="{% url 'static_site:single_product_edit' product.name|lower key %}">Edit order</a>
                                         <a class="dropdown-item basketAction" href="{% url 'static_site:delete' product|lower key %}">Remove from
                                             basket</a> -->

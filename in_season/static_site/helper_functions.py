@@ -85,8 +85,16 @@ def is_empty(request, product_key):
 
 
 def add_all_orders_to_db(request):
-    order_obj = get_or_create_order(request)
+    # gather all the current requests    
     order_requests = specific_items(request)
+
+    # Clear any pre recorded pending orders
+    if get_order(request):
+        previous_order_obj = get_order(request)
+        previous_order_obj.delete()
+    # Then create a fresh order object to add items to
+    order_obj = get_or_create_order(request)
+
     order_items = []
     for product_name, values in order_requests.items():
         for specific,quantity in values.items():

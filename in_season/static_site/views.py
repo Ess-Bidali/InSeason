@@ -84,9 +84,6 @@ def single(request, product_name, edit=""):
 
 
 def basket(request, product_name="", key=""):
-    if request.method == "DELETE":
-        print(request.DELETE.product_name)
-        print(request.DELETE.key)
     if product_name and key:
         remove_from_basket(request, product_name, key)        
         return redirect('static_site:my_basket')

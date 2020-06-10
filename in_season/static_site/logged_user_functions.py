@@ -19,7 +19,8 @@ def get_or_create_order(request):
     except Http404: customer = Customer.objects.create(user=request.user)
     #get existing unplaced order from same user or create a new one
     try: order = get_object_or_404(Order, customer=customer, status='Pending')
-    except Http404: order = Order.objects.create(customer=customer)
+    except Http404: 
+        order = Order.objects.create(customer=customer)
     return order
 
 
