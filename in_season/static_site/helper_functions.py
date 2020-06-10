@@ -1,7 +1,8 @@
 from django.core import serializers
 from django.http import JsonResponse, Http404
-from .logged_user_functions import add_to_db_basket, remove_from_db_basket, get_order, get_product
+from .logged_user_functions import add_to_db_basket, remove_from_db_basket, get_or_create_order, get_product, get_basket_total, get_order
 from .static_helper_functions import specific_items
+
 
 #       HELPER METHODS FOR CART FUNCTIONALITIES WHEN USER IS NOT LOGGED IN
 
@@ -30,7 +31,7 @@ def add_to_basket(request, product_name):
     request.session['user_orders']['items'][product_name][product_key] += how_many
     request.session.modified = True
     if request.user.is_authenticated:
-        order = get_order(request)
+        order = get_or_create_order(request)
         add_to_db_basket(request,product_name, order)
 
 
@@ -41,7 +42,8 @@ def edit_basket_item(request, product_name, product_key):
 
 
 #helper to remove items from basket
-def remove_from_basket(request, product_name, key, action='delete'):
+def remove_from_basket(request, product_name, key, action=''):
+    if not action: action = 'delete'   
     if product_name in request.session['user_orders']['items']:
         if key in request.session['user_orders']['items'][product_name]:
             del request.session['user_orders']['items'][product_name][key]
@@ -52,24 +54,28 @@ def remove_from_basket(request, product_name, key, action='delete'):
             request.session.modified = True
     if request.user.is_authenticated:
         order = get_order(request)
+        if not order: return
         remove_from_db_basket(order, key, action)
-
+    
 
 def clear_basket(request):
     del request.session['user_orders']
 
 
 def get_total_cost(request, DEAL_OF_THE_DAY, DISCOUNT):
-    in_basket = specific_items(request)
     total = 0
     products = {}
     deal = 0
-    for product_name, value in in_basket.items():
-        prod = get_product(product_name)
-        products.update({prod:value})
-        if product_name == DEAL_OF_THE_DAY:
-            deal += [val for val in value.values()][0] * DISCOUNT
-        total += [val for val in value.values()][0] * prod.current_price
+    if request.user.is_authenticated:
+        products, total, deal = get_basket_total(request)
+    else:
+        in_basket = specific_items(request)
+        for product_name, value in in_basket.items():
+            prod = get_product(product_name)
+            products.update({prod:value})
+            if product_name == DEAL_OF_THE_DAY:
+                deal += [val for val in value.values()][0] * DISCOUNT
+            total += [val for val in value.values()][0] * prod.current_price
     subtotal = total + deal
     return products, subtotal, deal, total
 
@@ -79,12 +85,12 @@ def is_empty(request, product_key):
 
 
 def add_all_orders_to_db(request):
-    order_obj = get_order(request)
+    order_obj = get_or_create_order(request)
     order_requests = specific_items(request)
     order_items = []
-    for product_name,values in order_requests.items():
+    for product_name, values in order_requests.items():
         for specific,quantity in values.items():
-            detail = specific.split('_')[1]
+            detail = str(specific).split('_')[1]
             order_item = add_to_db_basket(request, product_name, order_obj, detail, quantity)
             order_items.append(order_item)
     return order_items

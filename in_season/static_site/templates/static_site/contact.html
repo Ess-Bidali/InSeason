@@ -1,16 +1,7 @@
 {% extends './base.html'%} {% block content%}
-<div class="hero-wrap hero-bread" style="background-image: url('/static/static_site/images/bg_2a.jpg');">
-    <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-center">
-            <div class="col-md-9 ftco-animate text-center">
-                <p class="breadcrumbs">
-                    <span class="mr-2"><a href="{% url 'static_site:home' %}">Home</a></span>
-                </p>
-                <h1 class="mb-0 bread">Contact us</h1>
-            </div>
-        </div>
-    </div>
-</div>
+<!--------------------------------- Hero-wrap --------------------------------------->
+{% include "./hero_wrap.html" %}
+<!--------------------------------- End of hero-wrap -------------------------------->
 
 <section class="ftco-section contact-section bg-light">
     <div class="container">

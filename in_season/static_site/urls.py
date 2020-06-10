@@ -14,7 +14,7 @@ urlpatterns = [
     path('shop/<str:category>', views.shop, name='shop'),
     path('shop/product/<str:product_name>', views.single, name='single_product'),
     path('shop/product/<str:product_name>/<str:edit>', views.single, name='single_product_edit'),
-    path('shop/basket/', views.basket, name='basket'),
+    path('shop/basket/', views.basket, name='my_basket'),
     path('shop/basket/<str:product_name>/<str:key>', views.basket, name='delete'),
     path('shop/checkout/', views.checkout, name='checkout'),
 # Account settings/pages 
@@ -23,7 +23,8 @@ urlpatterns = [
     path('accounts/logout/', auth_views.LogoutView.as_view(next_page='static_site:home'), name='logout'),
     path('accounts/switch/', auth_views.logout_then_login, name='switch_user'),
 # Static pages
-     path('<str:page>/', views.static_pages, name='static'),
+    path('<str:page>/', views.static_pages, name='static'),
+    path('site/test', views.test_page, name='test'),
 ]
 
 if settings.DEBUG:
