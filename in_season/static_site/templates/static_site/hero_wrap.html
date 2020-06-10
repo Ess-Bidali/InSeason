@@ -1,0 +1,44 @@
+{% load static %}
+<div class="hero-wrap hero-bread" style="background-image: url('/static/static_site/images/bg_2a.jpg');">
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9 ftco-animate text-center">
+                <p class="breadcrumbs">
+                    <span class="mr-2"><a href="{% url 'static_site:home' %}">Home</a></span>
+                    {% if nbar == 'single' or nbar == 'basket' or nbar == 'checkout' %}                        
+                    <span class="mr-2"><a href="{% url 'static_site:shop' %}">Shop</a></span>
+                        {% if nbar == 'single' or nbar == 'checkout' %}
+                        <span class="mr-2"><a href="{% url 'static_site:my_basket' %}">My Basket</a></span>
+                        {% endif %}
+                    {% endif %}
+                </p>
+                {% if nbar == 'shop' %}
+                <h1 class="mb-0 bread">Products</h1>
+                {% elif nbar == 'single'%}
+                <h1 class="mb-0 bread">Single Product</h1>
+                {% elif nbar == 'basket'%}
+                <h1 class="mb-0 bread">My Basket</h1>
+                {% elif nbar == 'checkout' %}
+                <h1 class="mb-0 bread">Checkout</h1>
+                {% elif nbar == 'contact' %}
+                <h1 class="mb-0 bread">Contacts</h1>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- {% if alert %} -->
+<!-- <section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+        <div class="alert alert-dark bg-dark text-white w-75 alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>        
+    </div>
+</section> -->
+<!-- {% endif %} -->

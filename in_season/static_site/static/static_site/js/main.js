@@ -256,9 +256,9 @@ AOS.init({
     OnePageNav();
 
     $('.categButton').click(function() {
-        $('.categButton.active').removeClass("active");
-        console.log(this);
-        $(this).addClass("active")
+        // $('.categButton.active').removeClass("active");
+        // console.log(this);
+        // $(this).addClass("active")
             // $.ajax({
             //     type: 'GET',
             //     data: { category: this.id },
@@ -359,7 +359,7 @@ AOS.init({
     };
     goHere();
 
-
+    //Home screen page deal of the day clock section
     function makeTimer() {
 
         var endTime = new Date();
@@ -393,7 +393,7 @@ AOS.init({
     setInterval(function() { makeTimer(); }, 1000);
 
     //Single product page
-    //display total cost of product order based on quantity and unit price
+    //display total cost of a product order based on quantity and unit price
     let changeTotal = function() {
         let text = $('#quantity');
         let costOfEach = parseInt(text.attr("data-each"));
@@ -417,7 +417,8 @@ AOS.init({
     });
 
 
-    // Also change total amount when user types value
+    //Single product page 
+    //Change total amount when user types value
     $('.quantity-input').on("input", function() {
         //First check if input is valid i.e 1 >= x <= max value
         if ($(this).val() < 1) {
@@ -434,6 +435,23 @@ AOS.init({
 
     document.querySelector(".img__btn").addEventListener("click", function() {
         document.querySelector(".cont").classList.toggle("s--signup");
+    });
+
+    //ajax method to remove product from basket
+    $('.basketAction').click(function() {
+        console.log('1');
+        product_key = this.data-key;
+        $.ajax({
+            type: 'DELETE',
+            data: { product_name: this.data-product_name,
+                    key: this.data-key },
+            success: function (data) {
+                data = JSON.parse(data);
+                rowId = "#" + product_key;
+                // $(rowId).empty();
+                console.log(rowId);
+            }
+        });
     });
 
 

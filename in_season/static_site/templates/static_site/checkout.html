@@ -1,18 +1,7 @@
 {% extends './base.html' %} {% block content %}
-<div class="hero-wrap hero-bread" style="background-image:  url('/static/static_site/images/bg_3a.jpg');">
-    <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-center">
-            <div class="col-md-9 ftco-animate text-center">
-                <p class="breadcrumbs">
-                    <span class="mr-2"><a href="{% url 'static_site:home' %}">Home</a></span>
-                    <span class="mr-2"><a href="{% url 'static_site:shop' %}">Shop</a></span>
-                    <span class="mr-2"><a href="{% url 'static_site:basket' %}">My Basket</a></span>
-                </p>
-                <h1 class="mb-0 bread">Checkout</h1>
-            </div>
-        </div>
-    </div>
-</div>
+<!--------------------------------- Hero-wrap --------------------------------------->
+{% include "./hero_wrap.html" %}
+<!--------------------------------- End of hero-wrap -------------------------------->
 
 <section class="ftco-section">
     <div class="container">
@@ -76,8 +65,7 @@
                                 {{form.phone_number}}
                             </div>
                         </div>
-
-                        <!-- <div class="w-100"></div> -->
+                        <!-- <div class="w-100"></div>                         -->
                         <!-- <div class="col-md-6">
                             <div class="form-group">
                                 <label for="postcodezip">Postcode / ZIP *</label>
@@ -102,11 +90,9 @@
                     </div>
 
                     <!-- END -->
-                </div>
-                <div class="col-xl-5">
-                    <div class="row mt-5 pt-3">
+                    <div class="row mt-5 mt-lg-3 pt-3">
                         <div class="col-md-12 d-flex mb-5">
-                            <div class="cart-detail cart-total p-3 p-md-4">
+                            <div class="cart-detail cart-total p-3 p-md-4 shadow">
                                 <h3 class="billing-heading mb-4">Cart Total</h3>
                                 <p class="d-flex">
                                     <span>Subtotal</span>
@@ -125,47 +111,74 @@
                                     <span>Total</span>
                                     <span>Ksh. {{total}}</span>
                                 </p>
-                                <p><input type="submit" class="btn btn-black py-3 px-5" value="Place My Order"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-5">
+                    <div class="row mt-5 pt-3">
+                        <div class="col-md-12">
+                            <div class="cart-detail p-3 p-md-4 bg-light" style="border-radius: 10px;">
+                                <h3 class="billing-heading mb-4">Payment Method</h3>
+                                <!-- Payment Form toggle -->
+                                <div class="form-group form-inline">
+                                    <label class="mr-3 mr-md-5"><input type="radio" name="payment" class="mr-2" value="Pay now"
+                                            data-toggle="collapse" data-target="#pay-now" aria-controls="pay-now"
+                                            role="button">
+                                        Pay now (Mpesa)</label>
+                                    Or
+                                    <label class="ml-3 ml-md-5"><input type="radio" name="payment" value="Pay later"
+                                            class="mr-2" aria-controls="pay-now" role="button">
+                                        Pay on delivery</label>
+                                </div>
+                                <!-- End of Payment Form toggle -->
+                                <!-- Payment Form -->
+                                <div id="pay-now" class="collapse px-2 pt-2 bg-white" style="border-radius: 10px;">
+                                    <h3 class="billing-heading mb-4">Payment Method</h3>
+                                    <p style="color: #000000;">Please enter your phone number to process
+                                        your payment.
+                                        You will receive a prompt from mpesa to approve the transaction once you click
+                                        "Place My Order"
                                     </p>
+                                    <p style="color: crimson;">Make sure your phone is unlocked so you can approve the transaction</p>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label for="bill-amount" class="mr-3">Amount:</label>
+                                            <input type="text" id="bill-amount" class="border-0 text-center"
+                                                value="{{total}}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label for="billing-phone_number">Phone number:</label>
+                                            <input id="billing-phone_number" type="number" class="form-control"
+                                                value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="" class="mr-2"> I accept the
+                                                    <a href="{% url 'static_site:static' 'terms-and-conditions' %}">
+                                                        terms and conditions</a></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End of Payment Form -->
+                                <!-- <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="radio">
+                                            <label><input type="radio" name="payment" value="Pay later" class="mr-2"
+                                                data-toggle="collapse" data-target="#pay-now" aria-controls="pay-now" role="button"> 
+                                                Pay on delivery</label>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <p><input type="submit" class="btn btn-black py-3 px-5" value="Place My Order">
+                                </p>
                             </div>
                         </div>
-
-                        <!-- <div class="col-md-12">
-                        <div class="cart-detail p-3 p-md-4">
-                            <h3 class="billing-heading mb-4">Payment Method</h3>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="radio">
-                                        <label><input type="radio" name="optradio" class="mr-2"> Direct Bank
-                                            Tranfer</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="radio">
-                                        <label><input type="radio" name="optradio" class="mr-2"> Check Payment</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="radio">
-                                        <label><input type="radio" name="optradio" class="mr-2"> Paypal</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" value="" class="mr-2"> I have read and accept the
-                                            terms and conditions</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <p><a href="#" class="btn btn-primary py-3 px-4">Place an order</a></p>
-                        </div>
-                    </div> -->
                     </div>
                 </div>
                 <!-- .col-md-8 -->

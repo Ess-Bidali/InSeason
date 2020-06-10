@@ -1,25 +1,37 @@
+import json
+import base64
+from datetime import datetime
 from decimal import *
 from django.http import Http404
 from .forms import CheckoutForm
 from django.contrib.auth.models import User
 from .logged_user_functions import complete_order
-from .models import Category, Product, Phone_Number
+from .models import Category, Product, Phone_Number, Stock
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from .static_helper_functions import get_json_respose, paginate, get_context
 from .helper_functions import add_to_basket, remove_from_basket, get_total_cost, clear_basket, edit_basket_item, add_all_orders_to_db
 
+
+import requests
+from requests.auth import HTTPBasicAuth
+
+
+
 DEAL_OF_THE_DAY = 'avocado'
 DISCOUNT = Decimal('3.00')
 
 def index(request):
     products = Product.objects.all()[:4]
-    # deal = Product.objects.filter(name__iexact=DEAL_OF_THE_DAY)
     deal = get_object_or_404(Product, name__iexact=DEAL_OF_THE_DAY)
     context = get_context(request, 'home', products)
     context.update({'deal': deal})
     return render(request, 'static_site/index.html', context)
+
+def test_page(request):
+    context = get_context(request, 'home')
+    return render(request, 'static_site/test.html', context)
 
 #static pages
 def static_pages(request, page):
@@ -27,7 +39,7 @@ def static_pages(request, page):
     if page == 'terms-and-conditions': return render(request, 'static_site/terms.html', context)
     elif page == 'privacy-policy': return render(request, 'static_site/privacy_policy.html', context)
     elif page == 'FAQs': return render(request, 'static_site/faqs.html', context)
-    else : return render(request, 'static_site/index.html', context)
+    else : return redirect('static_site:home')
 
 
 def contact(request):
@@ -60,8 +72,7 @@ def single(request, product_name, edit=""):
         # If a key has been passed then it is an edit request
             product_key = request.POST.get('key')
             edit_basket_item(request, product_name, product_key)
-            return redirect('static_site:basket')
-
+            return redirect('static_site:my_basket')
         # If there is no key, then simply add item to basket
         else: 
             add_to_basket(request, product_name) 
@@ -73,9 +84,12 @@ def single(request, product_name, edit=""):
 
 
 def basket(request, product_name="", key=""):
+    if request.method == "DELETE":
+        print(request.DELETE.product_name)
+        print(request.DELETE.key)
     if product_name and key:
         remove_from_basket(request, product_name, key)        
-        return redirect('static_site:basket')
+        return redirect('static_site:my_basket')
     products, subtotal, deal, total = get_total_cost(request, DEAL_OF_THE_DAY, DISCOUNT)
     context = get_context(request, 'basket', products)
     context.update({'total': total, 'deal': deal, 'subtotal': subtotal})
@@ -85,18 +99,19 @@ def basket(request, product_name="", key=""):
 @login_required()
 def checkout(request):
     if request.method == 'POST':
-        #validate input and addign to variables
+        #validate input and adding to variables
         form = CheckoutForm(request.POST)
         if form.is_valid():
+            if request.POST.get('payment') == 'Pay now': process_payment(request)
             complete_order(request, form)
             clear_basket(request)
     else:
         form = CheckoutForm()    
+    order_items = add_all_orders_to_db(request)
     products, subtotal, deal, total = get_total_cost(request, DEAL_OF_THE_DAY, DISCOUNT)
     #if any product order was placed, redirect to shop else, go to checkout
     if not products: return redirect('static_site:shop')
-    #create order item object list for all the orders stored in session data
-    order_items = add_all_orders_to_db(request)        
+    #create order item object list for all the orders stored in session data            
     context = get_context(request, 'checkout', products)
     context.update({'total': total, 'deal': deal, 'subtotal': subtotal, 'form':form})
     return render(request, 'static_site/checkout.html', context)
@@ -117,3 +132,62 @@ def register_user(request):
             user.save()
             login(request, user)
     return redirect('static_site:checkout')
+
+
+def process_payment(request):
+    # Authenticate, i.e. get access token
+    access_token = get_mpesa_auth()
+    credentials_expiry = '2020-05-10T11:10:03+03:00'
+    short_code = '174379'
+    timestamp = get_timestamp()
+    lnm_passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
+    password = encode_password(short_code, lnm_passkey, timestamp)
+    transaction_type = ['CustomerPayBillOnline', 'CustomerBuyGoodsOnline']
+    amount = request.POST.get('pay_amount')    
+    phone_number = '254708374149'
+    callback_url = ''
+    account_ref = ''
+    description = ''
+    
+    headers = { f'Authorization": "Bearer {access_token}'}
+
+    request = {
+        "BusinessShortCode": f"{short_code}",
+        "password": f"{password}",
+        "Timestamp": f"{timestamp}",
+        "TransactionType": f"{transaction_type}",
+        "Amount": f'{amount}',
+        "PartyA": f"{phone_number}",
+        "PartyB": f"{short_code}",
+        "PhoneNumber": f"{phone_number}",
+        "CallBackURL": f"{callback_url}",
+        "AccountReference": f"{account_ref}",
+        "TransactionDesc": f"{description}"
+    }
+
+    api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+  
+    response = requests.post(api_url, json = request, headers=headers)
+    print (response.text)
+
+
+def get_timestamp():
+    now = datetime.now()
+    now = f'{now.strftime("%Y%m%d%H%M%S")}' #YYMMDDHHmmss (Time is 24hr-based)
+    return now
+
+def encode_password(shortcode, lnm_passkey, timestamp):
+    password = f'{shortcode}{lnm_passkey}{timestamp}'
+    password_in_bytes = password.encode('ascii')
+    password = base64.b64encode(password_in_bytes)
+    return password
+
+def get_mpesa_auth():
+    consumer_key = "pcj9rupHg2LUpiPUtT5AEMhTTn3y40de"
+    consumer_secret = "7MwTgzhgZivUz9A4"
+    api_URL = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
+    json_data = requests.get(api_URL, auth=(consumer_key, consumer_secret))
+    json_data = json.loads(json_data.text)  # Converts returned json object into a python dictionary object
+    access_token = json_data.get("access_token")
+    print(access_token)
+    return access_token

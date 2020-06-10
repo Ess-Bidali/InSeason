@@ -4,9 +4,11 @@
 <div class="row product-row" id="product-row">
     {% for product in products %}
     <div class="col-md-6 col-lg-3 ftco-animate">
-        <div class="product">
+        <div class="product">            
             <span class="img-prod"><img class="img-fluid" src="{{ product.image.url }}" alt="{{product}} image">
-                <span class="status">30%</span>
+                {% if product.discount %}
+                <span class="status">{{product.percentage_discount}}% Off</span>
+                {% endif %}
                 <div class="overlay"></div>
             </span>
             <div class="text py-3 pb-4 px-3 text-center">
@@ -14,8 +16,8 @@
                 <div class="d-flex">
                     <div class="pricing">
                         <p class="price">
-                            {% if product.current_price < product.old_price %}
-                            <span class="mr-2 price-dc">ksh. {{ product.current_price }}</span>
+                            {% if product.current_price < product.market_price %}
+                            <span class="mr-2 price-dc">ksh. {{ product.market_price }}</span>
                             {% endif %}
                             <span class="price-sale">ksh. {{ product.current_price }}/{{ product.unit }}</span>
                         </p>
@@ -30,13 +32,13 @@
                         </a>
                         <a href="{% url 'static_site:single_product' product|lower %}"
                             class="buy-now d-flex justify-content-center align-items-center mx-1"
-                            {% if product|lower in in_basket %}style="background: #ed9121;"
+                            {% if product|lower in in_basket or product in in_basket %}style="background: #ed9121;"
                             title="This item is in your basket" {% else %} title="Add this to my basket" {% endif %} 
                             data-toggle="tooltip" data-placement="top">
                             <span><i class="ion-ios-cart"></i></span>
                         </a>
                         <a class="heart d-flex justify-content-center align-items-center 
-                        {% if not product.amount_available %}bg-secondary"
+                        {% if not product.is_available %}bg-secondary"
                             title="Unavailable" {% else %} " title="Available" {% endif %}
                             data-toggle="tooltip" data-placement="top">
                             <span><i class="ion-ios-basket"></i></span>

@@ -1,21 +1,12 @@
 {% extends './base.html' %} {% block content%} {% load static %}{% load mathfilters %}
 
-<div class="hero-wrap hero-bread" style="background-image: url('/static/static_site/images/bg_3a.jpg');">
-    <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-center">
-            <div class="col-md-9 ftco-animate text-center">
-                <p class="breadcrumbs">
-                    <span class="mr-2"><a href="{% url 'static_site:home' %}">Home</a></span>
-                    <span class="mr-2"><a href="{% url 'static_site:shop' %}">Shop</a></span>
-                </p>
-                <h1 class="mb-0 bread">My Shopping Basket</h1>
-            </div>
-        </div>
-    </div>
-</div>
+<!--------------------------------- Hero-wrap --------------------------------------->
+{% include "./hero_wrap.html" %}
+<!--------------------------------- End of hero-wrap -------------------------------->
 
 <section class="ftco-section ftco-cart">
     <div class="container">
+        {% if capacity %}
         <div class="row">
             <div class="col-md-12 ftco-animate">
                 <div class="cart-list">
@@ -30,15 +21,19 @@
                         </thead>
                         <tbody id="basket-products">
                             {% for product, values in products.items %} {% for key,amount in values.items %}
-                            <tr class="text-center" id="{{product}}">
+                            <tr class="text-center" id="{{product}}" id="{{key}}">
                                 <td class="product-remove">
                                     <a href="#" class="dropdown-toggle" id="edit-or-delete" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="icon-menu"></span>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="edit-or-delete">
+                                        <!-- <input type="submit" class="dropdown-item" href="{% url 'static_site:single_product_edit' product.name|lower key %}" value="Edit order"> -->
                                         <a class="dropdown-item" href="{% url 'static_site:single_product_edit' product.name|lower key %}">Edit order</a>
-                                        <a class="dropdown-item" href="{% url 'static_site:delete' product|lower key %}">Remove from
+                                        <a class="dropdown-item basketAction" data-product="{{product|lower}}" data-key="{{key}}">Remove from
                                             basket</a>
+                                        <!-- <a class="dropdown-item" href="{% url 'static_site:single_product_edit' product.name|lower key %}">Edit order</a>
+                                        <a class="dropdown-item basketAction" href="{% url 'static_site:delete' product|lower key %}">Remove from
+                                            basket</a> -->
                                     </div>
                                 </td>
 
@@ -60,6 +55,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
         <div class="row">
             <div class="col-lg-5 mt-5 cart-wrap ftco-animate">
                 <div class="cart-total mb-3">

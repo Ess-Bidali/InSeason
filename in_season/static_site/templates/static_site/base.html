@@ -72,15 +72,17 @@
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item {% if nbar == 'home' %}active{% endif %}"><a href="{% url 'static_site:home'%}" class="nav-link">Home</a></li>
+                    {% if nbar == 'home'%}
+                    <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                    {% endif %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {% if nbar == 'shop' or nbar == 'product' or nbar == 'basket' or nbar == 'checkout' %}active{% endif %}" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown04">
                             <a class="dropdown-item {% if nbar == 'shop' or nbar == 'single' %}active{% endif %}" href="{% url 'static_site:shop'%}">Shop</a>
-                            <a class="dropdown-item {% if nbar == 'basket' %}active{% endif %}" href="{% url 'static_site:basket' %}">My Basket</a> {% if capacity %}
+                            <a class="dropdown-item {% if nbar == 'basket' %}active{% endif %}" href="{% url 'static_site:my_basket' %}">My Basket</a> {% if capacity %}
                             <a class="dropdown-item {% if nbar == 'checkout' %}active{% endif %}" href="{% url 'static_site:checkout' %}">Checkout</a> {% endif %}
                         </div>
                     </li>
-                    <li class="nav-item {% if nbar == 'about' %}active{% endif %}"><a href="{% if nbar != 'home' %}#{% else %}#about{% endif %}" class="nav-link">About</a></li>
                     <li class="nav-item {% if nbar == 'contact' %}active{% endif %}"><a href="{% url 'static_site:contact' %}" class="nav-link">Contact</a></li>
                     <li class="nav-item dropdown {% if user.is_authenticated %}cta{% endif %} cta-colored">
                         <a class="nav-link dropdown-toggle" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-user"></a>
@@ -91,14 +93,15 @@
                             <a class="dropdown-item" href="{% url 'static_site:switch_user' %}">Switch account</a> {% endif %}
                         </div>
                     </li>
-                    <li class="nav-item cta cta-colored"><a href="{% url 'static_site:basket' %}" class="nav-link"><span
-                                    class="icon-shopping_cart"></span><span class="badge badge-dark">{{capacity}}</span></a></li>
+                    <li class="nav-item cta cta-colored"><a href="{% url 'static_site:my_basket' %}" class="nav-link">
+                        <span class="icon-shopping_cart"></span><span class="badge badge-dark">{{capacity}}</span></a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
     <!-- END nav -->
-
+    
     {% block content %}
     <!-------------------------------ACTUAL BODY CONTENT GOES HERE-------------------------------->
     {% endblock %}
@@ -174,7 +177,7 @@
                         Copyright &copy;
                         <script>
                             document.write(new Date().getFullYear());
-                        </script> All rights reserved | Made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://github.com/Ess-Bidali" target="_blank">Ess_Bidali</a>, frontend template via <a href="https://colorlib.com"
+                        </script> All rights reserved | Made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://github.com/Ess-Bidali" target="_blank">Ess_Bidali</a>, frontend tools sourced from <a href="https://colorlib.com"
                             target="_blank">Colorlib themes</a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </p>
